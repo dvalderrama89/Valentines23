@@ -21,7 +21,16 @@ function update(timeStamp) {
         last = timeInSeconds;
         let displayCounter = document.getElementById("counter");
         displayCounter.innerHTML = tokens += BigInt((1*modifier));
+        setCookie("Tokens", tokens.toString(), 30);
     }
 
     window.requestAnimationFrame(update);
 }
+
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    window.location.hostname;
+  }
