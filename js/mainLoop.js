@@ -13,6 +13,15 @@ window.onload = (event) => {
 
 function start() {
     window.requestAnimationFrame(update);
+
+    // Initializes the cookies for currency if they don't exist
+    if (!getCookie("heartTokens")) {
+        setCookie("heartTokens", 0, 30);
+    }
+
+    if (!getCookie("kittyPaws")) {
+        setCookie("kittyPaws", 0, 30);
+    }
 }
 
 function update(timeStamp) {
