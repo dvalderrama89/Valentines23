@@ -66,22 +66,22 @@ function updateHeartTokens(flatRateIncrement=0) {
     } else {
         heartTokens += BigInt(1*modifier);
     }
+    setCookie("heartTokens", heartTokens.toString(), 30);
 }
 
 function updateHeartTokenDisplay() {
     let displayCounter = document.getElementById("heartTokens");
     displayCounter.innerHTML = `${heartTokens} Hearts`;
-    setCookie("heartTokens", heartTokens.toString(), 30);
 }
 
 function updateKittyPaws() {
     kittyPaws += 1*modifier;
+    setCookie("kittyPaws", kittyPaws.toString(), 30);
 }
 
 function updateKittyPawsDisplay() {
     let displayCounter = document.getElementById("kittyPaws");
     displayCounter.innerHTML = `${kittyPaws} Kitty Paws`;
-    setCookie("kittyPaws", kittyPaws.toString(), 30);
 }
 
 function initializeCounters() {
@@ -92,7 +92,7 @@ function initializeCounters() {
         setCookie("heartTokens", 0, 30);
     } else {
         let heartTokenDisplay = document.getElementById("heartTokens");
-        heartTokens = getCookie("heartTokens");
+        heartTokens = BigInt(parseInt(getCookie("heartTokens")));
     }
 
     if (!getCookie("kittyPaws")) {
@@ -100,7 +100,7 @@ function initializeCounters() {
         setCookie("kittyPaws", 0, 30);
     } else {
         let kittyPawsDisplay = document.getElementById("kittyPaws");
-        kittyPaws = getCookie("kittyPaws");
+        kittyPaws = BigInt(parseInt(getCookie("kittyPaws")));
     }
 }
 
