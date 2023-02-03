@@ -27,6 +27,9 @@ function update(timeStamp) {
             updateHeartTokens();
             updateKittyPaws();
         }
+    } else {
+        updateHeartTokenDisplay();
+        updateKittyPawsDisplay();
     }
     
     // Updates the flat rate increment text in the +X Hearts! Button when the player purchases upgrades
@@ -43,8 +46,14 @@ function buy(elem) {
                 heartTokens -= BigInt(ShopItems.plusOneBonus.price);
                 modifier += ShopItems.plusOneBonus.increase;
             }
+            break;
+        }
+        default: {
+            console.log("elem.id: " + elem.id) ;
         }
     }
+
+    updateHeartTokenDisplay();
 }
 
 function incrementHearts(elem) {
@@ -52,26 +61,28 @@ function incrementHearts(elem) {
 }
 
 function updateHeartTokens(flatRateIncrement=0) {
-    let displayCounter = document.getElementById("heartTokens");
-
-    let updatedHearts = 0;
     if (flatRateIncrement) {
-        updatedHearts = heartTokens += BigInt(flatRateIncrement);
+        heartTokens += BigInt(flatRateIncrement);
     } else {
-        updatedHearts = heartTokens += BigInt(1*modifier);
+        heartTokens += BigInt(1*modifier);
     }
+}
 
-    displayCounter.innerHTML = `${updatedHearts} Hearts`;
+function updateHeartTokenDisplay() {
+    let displayCounter = document.getElementById("heartTokens");
+    displayCounter.innerHTML = `${heartTokens} Hearts`;
     setCookie("heartTokens", heartTokens.toString(), 30);
-    // console.log('cookie: ' + getCookie("heartTokens"));
 }
 
 function updateKittyPaws() {
+    kittyPaws += 1*modifier;
+    updateKittyPawsDisplay();
+}
+
+function updateKittyPawsDisplay() {
     let displayCounter = document.getElementById("kittyPaws");
-    let updatedHearts = kittyPaws += 1*modifier;
-    displayCounter.innerHTML = `${updatedHearts} Kitty Paws`;
+    displayCounter.innerHTML = `${kittyPaws} Kitty Paws`;
     setCookie("kittyPaws", kittyPaws.toString(), 30);
-    // console.log('cookie: ' + getCookie("kittyPaws"));
 }
 
 function initializeCounters() {
@@ -124,4 +135,4 @@ var ShopItems = {
 }
 
 
-// TODO: add more UI output to the html, fix kitty paws incrementing incorrectly, fix modifier for how fast the counter ticks
+// TODO: add more shop items (convert manual kitty paw redeem to auto), add random event mechanic, add reward shop
