@@ -27,10 +27,10 @@ function update(timeStamp) {
             updateHeartTokens();
             updateKittyPaws();
         }
-    } else {
-        updateHeartTokenDisplay();
-        updateKittyPawsDisplay();
     }
+
+    updateHeartTokenDisplay();
+    updateKittyPawsDisplay();
     
     // Updates the flat rate increment text in the +X Hearts! Button when the player purchases upgrades
     let flatHeartTokensButtonElement = document.getElementById("plusOneHeartsButton");
@@ -76,7 +76,6 @@ function updateHeartTokenDisplay() {
 
 function updateKittyPaws() {
     kittyPaws += 1*modifier;
-    updateKittyPawsDisplay();
 }
 
 function updateKittyPawsDisplay() {
@@ -88,6 +87,7 @@ function updateKittyPawsDisplay() {
 function initializeCounters() {
     // Initializes the cookies for currency if they don't exist
     if (!getCookie("heartTokens")) {
+        console.log("initializing hearts to 0");
         setCookie("heartTokens", 0, 30);
     } else {
         let heartTokens = document.getElementById("heartTokens");
@@ -95,6 +95,7 @@ function initializeCounters() {
     }
 
     if (!getCookie("kittyPaws")) {
+        console.log("initializing paws to 0");
         setCookie("kittyPaws", 0, 30);
     } else {
         let kittyPaws = document.getElementById("kittyPaws");
