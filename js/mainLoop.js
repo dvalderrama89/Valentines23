@@ -86,20 +86,21 @@ function updateKittyPawsDisplay() {
 
 function initializeCounters() {
     // Initializes the cookies for currency if they don't exist
+    console.log("initializing counters");
     if (!getCookie("heartTokens")) {
         console.log("initializing hearts to 0");
         setCookie("heartTokens", 0, 30);
     } else {
-        let heartTokens = document.getElementById("heartTokens");
-        heartTokens.innerHTML = getCookie("heartTokens");
+        let heartTokenDisplay = document.getElementById("heartTokens");
+        heartTokens = getCookie("heartTokens");
     }
 
     if (!getCookie("kittyPaws")) {
         console.log("initializing paws to 0");
         setCookie("kittyPaws", 0, 30);
     } else {
-        let kittyPaws = document.getElementById("kittyPaws");
-        kittyPaws.innerHTML = getCookie("kittyPaws");
+        let kittyPawsDisplay = document.getElementById("kittyPaws");
+        kittyPaws = getCookie("kittyPaws");
     }
 }
 
