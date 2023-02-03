@@ -6,6 +6,7 @@ let heartTokens = BigInt(0); // hearts - accumulates into purchasing currency
 let kittyPaws = 0; // the purchasing currency
 let speed = .6; // Increases the rate that the timer on screen ticks up
 let modifier = 1.0; // Increases the number of extra heartTokens getting added at once (instead of hard capping at the frame rate being the max)
+let flatRateHeartTokensBonus = BigInt(1);
 
 window.onload = (event) => {
     start();
@@ -17,13 +18,20 @@ function start() {
 }
 
 function update(timeStamp) {
-    let timeInSeconds = timeStamp / 1000;
+    let timeInSeconds = timeStamp / ShopItems.autoIncrementer.baseMod;
 
-    if (timeInSeconds - last >= speed) {
-        last = timeInSeconds;
-        updateHeartTokens();
-        updateKittyPaws();
+    // This is what turns the game from manual to idle by starting the tick up of currency on a timer
+    if (ShopItems.autoIncrementer.owned) {
+        if (timeInSeconds - last >= speed) {
+            last = timeInSeconds;
+            updateHeartTokens();
+            updateKittyPaws();
+        }
     }
+    
+    // Updates the flat rate increment text in the +X Hearts! Button when the player purchases upgrades
+    let flatHeartTokensButtonElement = document.getElementById("plusOneHeartsButton");
+    flatHeartTokensButtonElement.innerHTML = `+${flatRateHeartTokensBonus} Hearts!`;
 
     window.requestAnimationFrame(update);
 }
@@ -39,11 +47,20 @@ function buy(elem) {
     }
 }
 
+function incrementHearts(elem) {
+    updateHeartTokens(flatRateHeartTokensBonus);
+}
 
-
-function updateHeartTokens() {
+function updateHeartTokens(flatRateIncrement=0) {
     let displayCounter = document.getElementById("heartTokens");
-    let updatedHearts = heartTokens += BigInt((1*modifier));
+
+    let updatedHearts = 0;
+    if (flatRateIncrement) {
+        updatedHearts = heartTokens += BigInt(flatRateIncrement);
+    } else {
+        updatedHearts = heartTokens += BigInt(1*modifier);
+    }
+
     displayCounter.innerHTML = `${updatedHearts} Hearts`;
     setCookie("heartTokens", heartTokens.toString(), 30);
     // console.log('cookie: ' + getCookie("heartTokens"));
@@ -95,10 +112,16 @@ function getCookie(cookieName) {
 
 var ShopItems = {
     "plusOneBonus": {
+        "owned": 0,
         "price": 10,
         "increase": 1 
+    },
+    "autoIncrementer": {
+        "owned": 0,
+        "price": 100,
+        "baseMod": 10000
     }
 }
 
 
-// TODO: add more UI output to the html
+// TODO: add more UI output to the html, fix kitty paws incrementing incorrectly, fix modifier for how fast the counter ticks
