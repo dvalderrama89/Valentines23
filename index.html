@@ -12,19 +12,28 @@
             <input type="submit" value="Submit!">
         </form> -->
         <div id="heartCurrencyContainer" style="display: flex">
-            <div class="currency" id="heartTokens">0 Hearts</div>
+            <div class="currency" id="heartTokens">0 💖</div>
             <div>
                 <button class="currency" type="button" id="plusOneHeartsButton" onClick="incrementHearts(this)">+1 Hearts!</button>
             </div>
         </div>
         
         <div id="kittyPawCurrencyContainer" style="display: flex;">
-            <div class="currency" id="kittyPaws">0 Kitty Paws</div>
+            <div class="currency" id="kittyPaws">0 🐾</div>
         </div>
         
+        <!-- Shop -->
         <hr color="black">
         <h3>Shop</h3>
-        <button id="plusOneBonus" type="button" onClick="buy(this)">+1 Hearts</button><label> Cost: 10 Hearts</label>
+        <table>
+
+        </table>
+        <label>Audiobook - Cost: 10💖</label><button id="plusOneBonus" type="button" onClick="buy(this)">Buy</button>
+
+        <!-- Treasure Box -->
+        <hr color="black">
+        <h3>Treasure Box</h3>
+        <label>Audiobook - Cost: 1 🐾</label><button id="hpch1" type="button" onClick="unlock(this)"><a href="rewards/testFileHP1.mp3" target="_blank" style="all:unset;">Unlock</a></button>
     </body>
     <script type="text/javascript" src="js/mainLoop.js"></script>
 </html>

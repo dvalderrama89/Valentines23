@@ -1,3 +1,20 @@
+@font-face { 
+    font-family: "Adventure Request"; 
+    src: url('fonts/Adventure\ ReQuest-e679.woff'); 
+} 
+
+body {
+    font-family: "Adventure Request";
+    font-size: larger;
+    background-color: antiquewhite;
+}
+
+button {
+    font-family: "Adventure Request";
+    font-size: medium;
+    background-color: rgb(201, 255, 195);
+}
+
 .currency {
     float:left;
     padding: 10px;

@@ -71,7 +71,7 @@ function updateHeartTokens(flatRateIncrement=0) {
 
 function updateHeartTokenDisplay() {
     let displayCounter = document.getElementById("heartTokens");
-    displayCounter.innerHTML = `${heartTokens} Hearts`;
+    displayCounter.innerHTML = `${heartTokens} 💖`;
 }
 
 function updateKittyPaws() {
@@ -81,7 +81,7 @@ function updateKittyPaws() {
 
 function updateKittyPawsDisplay() {
     let displayCounter = document.getElementById("kittyPaws");
-    displayCounter.innerHTML = `${kittyPaws} Kitty Paws`;
+    displayCounter.innerHTML = `${kittyPaws} 🐾`;
 }
 
 function initializeCounters() {
@@ -136,5 +136,14 @@ var ShopItems = {
     }
 }
 
+var TreasureBox = {
+    "audiobook": {
+        "title": "HPCh1",
+        "displayName": "Harry Potter - The Sorcerer's Stone Chapter 1 Audiobook",
+        "filePath": "rewards/testFileHP1.mp3"
+    }
+}
+
 
 // TODO: add more shop items (convert manual kitty paw redeem to auto), add random event mechanic, add reward shop
+// bugs: currency cookie isn't updated after purchasing from shop
