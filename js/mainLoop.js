@@ -22,7 +22,7 @@ function update(timeStamp) {
     let timeInSeconds = timeStamp / findInShop("autoIncrementer").baseMod;
 
     // This is what turns the game from manual to idle by starting the tick up of currency on a timer
-    if (!findInShop("autoIncrementer").owned) {
+    if (findInShop("autoIncrementer").owned) {
         if (timeInSeconds - last >= speed) {
             last = timeInSeconds;
             updateHeartTokens();
@@ -218,7 +218,7 @@ var ShopItems =
     "displayName": "Auto Increment +1",
     "owned": 0,
     "price": 100,
-    "baseMod": 1000
+    "baseMod": 10000
 }];
 
 function findInShop(itemID) {
