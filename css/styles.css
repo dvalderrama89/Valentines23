@@ -12,18 +12,32 @@ body {
 button {
     font-family: "Adventure Request";
     font-size: medium;
-    background-color: rgb(201, 255, 195);
+    background-color: rgb(217, 237, 214);
+}
+
+button:hover {
+    background-color: rgb(117, 175, 127);
+}
+
+button:active {
+    background-color: rgb(237, 231, 190);
 }
 
 .currency {
     float:left;
-    padding: 10px;
+    padding: 5px;
 }
 
 .menu {
     display: flex;
     width: 25%;
+    align-items: center;
 }
+
 .push {
     margin-left: auto;
+}
+
+.purchase {
+    padding: 5px;
 }
