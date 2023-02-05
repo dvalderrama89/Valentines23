@@ -11,6 +11,7 @@ body {
     font-family: "Adventure Request";
     font-size: larger;
     background-color: antiquewhite;
+    
 }
 
 button {
@@ -18,10 +19,6 @@ button {
     font-size: medium;
     background-color: rgb(217, 237, 214);
     border-color: rgb(217, 237, 214);
-}
-
-button:hover {
-    background-color: rgb(117, 175, 127);
 }
 
 button:active {
@@ -45,4 +42,18 @@ button:active {
 
 .purchase {
     padding: 5px;
+}
+
+/* ipad */
+@media screen and (min-width: 1024px) {
+    .menu {
+        width: 50%;
+    }
+}
+
+/* mobile phone */
+@media screen and (min-width: 360px) and (max-width: 500px) {
+    .menu {
+        width: 100%;
+    }
 }
