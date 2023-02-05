@@ -22,7 +22,7 @@ function update(timeStamp) {
     let timeInSeconds = timeStamp / findInShop("autoIncrementer").baseMod;
 
     // This is what turns the game from manual to idle by starting the tick up of currency on a timer
-    if (findInShop("autoIncrementer").owned) {
+    if (!findInShop("autoIncrementer").owned) {
         if (timeInSeconds - last >= speed) {
             last = timeInSeconds;
             updateHeartTokens();
@@ -67,8 +67,7 @@ function unlock(elem) {
 }
 
 function incrementHearts(elem) {
-    updateHeartTokens(flatRateHeartTokensBonus);
-    renderShop();
+    updateHeartTokens(flatRateHeartTokensBonus);    
 }
 
 function updateHeartTokens(flatRateIncrement=0) {
@@ -77,7 +76,21 @@ function updateHeartTokens(flatRateIncrement=0) {
     } else {
         heartTokens += BigInt(1*modifier);
     }
+
+    updateBuyButtons();
     setCookie("heartTokens", heartTokens.toString(), 30);
+}
+
+function updateBuyButtons() {
+    for (let item of ShopItems) {
+        if (heartTokens >= item.price) {
+            let itemElem = document.getElementById(item.id);
+            itemElem.disabled = false;
+        } else {
+            let itemElem = document.getElementById(item.id);
+            itemElem.disabled = true;
+        }
+    }
 }
 
 function updateHeartTokenDisplay() {
@@ -205,7 +218,7 @@ var ShopItems =
     "displayName": "Auto Increment +1",
     "owned": 0,
     "price": 100,
-    "baseMod": 10000
+    "baseMod": 1000
 }];
 
 function findInShop(itemID) {
