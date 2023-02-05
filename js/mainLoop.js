@@ -48,12 +48,20 @@ function buy(elem) {
             }
             break;
         }
+        case "autoIncrementer": {
+            console.log("autoIncrementertest");
+            break;
+        }
         default: {
             console.log("elem.id: " + elem.id) ;
         }
     }
 
     updateHeartTokenDisplay();
+}
+
+function unlock(elem) {
+    console.log("clicked");
 }
 
 function incrementHearts(elem) {

@@ -3,6 +3,10 @@
     src: url('fonts/Adventure\ ReQuest-e679.woff'); 
 } 
 
+a {
+    all:unset;
+}
+
 body {
     font-family: "Adventure Request";
     font-size: larger;
@@ -13,6 +17,7 @@ button {
     font-family: "Adventure Request";
     font-size: medium;
     background-color: rgb(217, 237, 214);
+    border-color: rgb(217, 237, 214);
 }
 
 button:hover {
