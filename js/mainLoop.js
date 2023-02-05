@@ -14,6 +14,7 @@ window.onload = (event) => {
 
 function start() {
     initializeCounters();
+    initializeShops();
     window.requestAnimationFrame(update);
 }
 
@@ -66,6 +67,7 @@ function unlock(elem) {
 
 function incrementHearts(elem) {
     updateHeartTokens(flatRateHeartTokensBonus);
+    renderShop();
 }
 
 function updateHeartTokens(flatRateIncrement=0) {
@@ -92,6 +94,54 @@ function updateKittyPawsDisplay() {
     displayCounter.innerHTML = `${kittyPaws} 🐾`;
 }
 
+// Update the shop dynamically every animation frame depending on what is in the ShopItems JSON
+function renderShop() {
+    let shopContainer = document.getElementById("shopContainer");
+
+    // Check to see if the shop element already exists in the list, if it does get rid of it and render again
+    let item = document.getElementById(ShopItems.autoIncrementer.id + "Item");
+    
+    if (item != null) {
+        console.log("removing");
+        item.remove();
+    }
+    // outer div
+    let shopItem = document.createElement("div");
+    shopItem.classList.add("purchase", "menu");
+    shopItem.setAttribute("id", ShopItems.autoIncrementer.id + "Item");
+
+    // first inner div
+    let shopItemDiv = document.createElement("div");
+    let shopItemDisplayText = document.createTextNode(ShopItems.autoIncrementer.displayName);
+    shopItemDiv.append(shopItemDisplayText);
+
+    // second inner div
+    let shopItemPriceDiv = document.createElement("div");
+    shopItemPriceDiv.classList.add("push");
+    let shopItemPriceDisplayText = document.createTextNode(`${ShopItems.autoIncrementer.price}💖`);
+    shopItemPriceDiv.append(shopItemPriceDisplayText);
+
+    // third inner div (which has a button inside of it)
+    let shopItemBuyDiv = document.createElement("div");
+    let shopItemBuyButton = document.createElement("button");
+    shopItemBuyButton.setAttribute("id", ShopItems.autoIncrementer.id);
+    shopItemBuyButton.setAttribute("type", "button");
+    shopItemBuyButton.setAttribute("onClick", "buy(this)");
+    shopItemBuyButton.classList.add("purchase");
+    shopItemBuyButton.disabled = true;
+    let shopItemBuyButtonDisplayText = document.createTextNode("Buy");
+    shopItemBuyButton.append(shopItemBuyButtonDisplayText);
+    shopItemBuyDiv.append(shopItemBuyButton);
+
+    // Combine the three divs to the outer div
+    shopItem.append(shopItemDiv);
+    shopItem.append(shopItemPriceDiv);
+    shopItem.append(shopItemBuyDiv);
+
+    // Final combine
+    shopContainer.append(shopItem);
+}
+
 function initializeCounters() {
     // Initializes the cookies for currency if they don't exist
     console.log("initializing counters");
@@ -110,6 +160,10 @@ function initializeCounters() {
         let kittyPawsDisplay = document.getElementById("kittyPaws");
         kittyPaws = BigInt(parseInt(getCookie("kittyPaws")));
     }
+}
+
+function initializeShops() {
+    renderShop();
 }
 
 function setCookie(cookieName, cookieValue, numDaysToExpire) {
@@ -142,6 +196,8 @@ var ShopItems = {
     "autoIncrementer": {
         "owned": 0,
         "price": 100,
+        "displayName": "Auto Increment +1",
+        "id": "autoIncrementer",
         "baseMod": 10000
     }
 }
