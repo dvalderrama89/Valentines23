@@ -19,3 +19,11 @@ button {
     float:left;
     padding: 10px;
 }
+
+.menu {
+    display: flex;
+    width: 25%;
+}
+.push {
+    margin-left: auto;
+}

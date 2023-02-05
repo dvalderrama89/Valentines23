@@ -124,11 +124,13 @@ function getCookie(cookieName) {
 }
 
 var ShopItems = {
+    // This is supposed to generate an extra heart token on every update when the autoIncrementer has been purchased
     "plusOneBonus": {
         "owned": 0,
         "price": 10,
         "increase": 1 
     },
+    // This automatically generates heart tokens on a given interval dictated by the baseMod and other mod vars
     "autoIncrementer": {
         "owned": 0,
         "price": 100,
