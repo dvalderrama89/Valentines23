@@ -19,10 +19,10 @@ function start() {
 }
 
 function update(timeStamp) {
-    let timeInSeconds = timeStamp / ShopItems.autoIncrementer.baseMod;
+    let timeInSeconds = timeStamp / findInShop("autoIncrementer").baseMod;
 
     // This is what turns the game from manual to idle by starting the tick up of currency on a timer
-    if (ShopItems.autoIncrementer.owned) {
+    if (findInShop("autoIncrementer").owned) {
         if (timeInSeconds - last >= speed) {
             last = timeInSeconds;
             updateHeartTokens();
@@ -43,9 +43,10 @@ function update(timeStamp) {
 function buy(elem) {
     switch (elem.id) {
         case "plusOneBonus": {
-            if (heartTokens >= ShopItems.plusOneBonus.price) {
-                heartTokens -= BigInt(ShopItems.plusOneBonus.price);
-                modifier += ShopItems.plusOneBonus.increase;
+            let elem = findInShop("plusOneBonus");
+            if (heartTokens >= elem.price) {
+                heartTokens -= BigInt(elem.price);
+                modifier += elem.increase;
             }
             break;
         }
@@ -98,48 +99,51 @@ function updateKittyPawsDisplay() {
 function renderShop() {
     let shopContainer = document.getElementById("shopContainer");
 
-    // Check to see if the shop element already exists in the list, if it does get rid of it and render again
-    let item = document.getElementById(ShopItems.autoIncrementer.id + "Item");
-    
-    if (item != null) {
-        console.log("removing");
-        item.remove();
+    for (const item of ShopItems) {
+        // Check to see if the shop element already exists in the list, if it does get rid of it and render again
+        let itemElem = document.getElementById(item.id + "Item");
+        
+        if (itemElem != null) {
+            console.log("removing");
+            itemElem.remove();
+        }
+        // outer div
+        let shopItem = document.createElement("div");
+        shopItem.classList.add("purchase", "menu");
+        shopItem.setAttribute("id", item.id + "Item");
+
+        // first inner div
+        let shopItemDiv = document.createElement("div");
+        let shopItemDisplayText = document.createTextNode(item.displayName);
+        shopItemDiv.append(shopItemDisplayText);
+
+        // second inner div
+        let shopItemPriceDiv = document.createElement("div");
+        shopItemPriceDiv.classList.add("push");
+        let shopItemPriceDisplayText = document.createTextNode(`${item.price}💖`);
+        shopItemPriceDiv.append(shopItemPriceDisplayText);
+
+        // third inner div (which has a button inside of it)
+        let shopItemBuyDiv = document.createElement("div");
+        let shopItemBuyButton = document.createElement("button");
+        shopItemBuyButton.setAttribute("id", item.id);
+        shopItemBuyButton.setAttribute("type", "button");
+        shopItemBuyButton.setAttribute("onClick", "buy(this)");
+        shopItemBuyButton.classList.add("purchase");
+        shopItemBuyButton.disabled = true;
+        let shopItemBuyButtonDisplayText = document.createTextNode("Buy");
+        shopItemBuyButton.append(shopItemBuyButtonDisplayText);
+        shopItemBuyDiv.append(shopItemBuyButton);
+
+        // Combine the three divs to the outer div
+        shopItem.append(shopItemDiv);
+        shopItem.append(shopItemPriceDiv);
+        shopItem.append(shopItemBuyDiv);
+
+        // Final combine
+        shopContainer.append(shopItem);
     }
-    // outer div
-    let shopItem = document.createElement("div");
-    shopItem.classList.add("purchase", "menu");
-    shopItem.setAttribute("id", ShopItems.autoIncrementer.id + "Item");
-
-    // first inner div
-    let shopItemDiv = document.createElement("div");
-    let shopItemDisplayText = document.createTextNode(ShopItems.autoIncrementer.displayName);
-    shopItemDiv.append(shopItemDisplayText);
-
-    // second inner div
-    let shopItemPriceDiv = document.createElement("div");
-    shopItemPriceDiv.classList.add("push");
-    let shopItemPriceDisplayText = document.createTextNode(`${ShopItems.autoIncrementer.price}💖`);
-    shopItemPriceDiv.append(shopItemPriceDisplayText);
-
-    // third inner div (which has a button inside of it)
-    let shopItemBuyDiv = document.createElement("div");
-    let shopItemBuyButton = document.createElement("button");
-    shopItemBuyButton.setAttribute("id", ShopItems.autoIncrementer.id);
-    shopItemBuyButton.setAttribute("type", "button");
-    shopItemBuyButton.setAttribute("onClick", "buy(this)");
-    shopItemBuyButton.classList.add("purchase");
-    shopItemBuyButton.disabled = true;
-    let shopItemBuyButtonDisplayText = document.createTextNode("Buy");
-    shopItemBuyButton.append(shopItemBuyButtonDisplayText);
-    shopItemBuyDiv.append(shopItemBuyButton);
-
-    // Combine the three divs to the outer div
-    shopItem.append(shopItemDiv);
-    shopItem.append(shopItemPriceDiv);
-    shopItem.append(shopItemBuyDiv);
-
-    // Final combine
-    shopContainer.append(shopItem);
+    
 }
 
 function initializeCounters() {
@@ -185,21 +189,27 @@ function getCookie(cookieName) {
     return cookieValue;
 }
 
-var ShopItems = {
-    // This is supposed to generate an extra heart token on every update when the autoIncrementer has been purchased
-    "plusOneBonus": {
-        "owned": 0,
-        "price": 10,
-        "increase": 1 
-    },
-    // This automatically generates heart tokens on a given interval dictated by the baseMod and other mod vars
-    "autoIncrementer": {
-        "owned": 0,
-        "price": 100,
-        "displayName": "Auto Increment +1",
-        "id": "autoIncrementer",
-        "baseMod": 10000
-    }
+// Every item needs the following and everything else is optional:
+// id, displayName, owned, price
+var ShopItems = 
+[{
+    "id": "plusOneBonus",
+    "displayName": "Manual Increment Bonus +1",
+    "owned": 0,
+    "price": 10,
+    "increase": 1 
+},
+// This automatically generates heart tokens on a given interval dictated by the baseMod and other mod vars
+{
+    "id": "autoIncrementer",
+    "displayName": "Auto Increment +1",
+    "owned": 0,
+    "price": 100,
+    "baseMod": 10000
+}];
+
+function findInShop(itemID) {
+    return ShopItems.find(item => item.id == itemID);
 }
 
 var TreasureBox = {
