@@ -48,7 +48,7 @@ function buy(elem) {
             let elem = findInShop("plusOneBonus");
             if (heartTokens >= elem.price) {
                 heartTokens -= BigInt(elem.price);
-                modifier += elem.increase;
+                flatRateHeartTokensBonus++;
             }
             break;
         }
