@@ -61,6 +61,7 @@ function buy(elem) {
         }
     }
 
+    updateBuyButtons();
     updateHeartTokenDisplay();
 }
 
