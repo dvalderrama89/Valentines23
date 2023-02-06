@@ -13,15 +13,18 @@
             <label for="wakeUp">Wake up in the morning~</label><br>
             <input type="submit" value="Submit!">
         </form> -->
-        <div id="heartCurrencyContainer" style="display: flex">
+        <div id="heartCurrencyContainer" style="display: flex; padding: 5px;">
             <div class="currency" id="heartTokens">0 💖</div>
             <div>
                 <button class="currency" type="button" id="plusOneHeartsButton" onClick="incrementHearts(this)">+1 Hearts!</button>
             </div>
         </div>
         
-        <div id="kittyPawCurrencyContainer" style="display: flex;">
+        <div id="kittyPawCurrencyContainer" style="display: flex; padding: 5px;">
             <div class="currency" id="kittyPaws">0 🐾</div>
+            <div>
+                <button class="currency" type="button" id="claimKittyPawsButton" onClick="incrementKittyPaws(this)" disabled>-10💖 Claim!</button>
+            </div>
         </div>
         
         <!-- Shop -->

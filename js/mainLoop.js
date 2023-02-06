@@ -7,6 +7,8 @@ let kittyPaws = 0; // the purchasing currency
 let speed = .6; // Increases the rate that the timer on screen ticks up
 let modifier = 1.0; // Increases the number of extra heartTokens getting added at once (instead of hard capping at the frame rate being the max)
 let flatRateHeartTokensBonus = BigInt(1);
+let flatRateKittyPawsBonus = 1;
+let kittyPawPriceDynamic = 10;
 
 window.onload = (event) => {
     start();
@@ -70,6 +72,17 @@ function incrementHearts(elem) {
     updateHeartTokens(flatRateHeartTokensBonus);    
 }
 
+function incrementKittyPaws(elem=null) {
+    updateHeartTokens(-1 * kittyPawPriceDynamic);
+    updateKittyPaws(flatRateKittyPawsBonus);
+    increaseKittyPawPrice();
+}
+
+// TODO: make this non linear later (maybe)
+function increaseKittyPawPrice() {
+    kittyPawPriceDynamic += 1;
+}
+
 function updateHeartTokens(flatRateIncrement=0) {
     if (flatRateIncrement) {
         heartTokens += BigInt(flatRateIncrement);
@@ -82,6 +95,15 @@ function updateHeartTokens(flatRateIncrement=0) {
 }
 
 function updateBuyButtons() {
+    // for kitty paw claim button
+    let kittyPawClaimButtonElem = document.getElementById("claimKittyPawsButton");
+    if (heartTokens >= kittyPawPriceDynamic) {
+        kittyPawClaimButtonElem.disabled = false;
+    } else {
+        kittyPawClaimButtonElem.disabled = true;
+    }
+
+    // for buttons in the Shop
     for (let item of ShopItems) {
         if (heartTokens >= item.price) {
             let itemElem = document.getElementById(item.id);
@@ -98,8 +120,8 @@ function updateHeartTokenDisplay() {
     displayCounter.innerHTML = `${heartTokens} 💖`;
 }
 
-function updateKittyPaws() {
-    kittyPaws += 1*modifier;
+function updateKittyPaws(flatRateIncrement=0) {
+    kittyPaws += flatRateIncrement;
     setCookie("kittyPaws", kittyPaws.toString(), 30);
 }
 
