@@ -237,7 +237,7 @@ function initializeCounters() {
         setCookie("kittyPaws", 0, 30);
     } else {
         let kittyPawsDisplay = document.getElementById("kittyPaws");
-        kittyPaws = BigInt(parseInt(getCookie("kittyPaws")));
+        kittyPaws = parseInt(getCookie("kittyPaws"));
     }
 }
 
