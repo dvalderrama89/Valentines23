@@ -61,6 +61,16 @@ function buy(elem) {
             }
             break;
         }
+        case "autoClaimer": {
+            if (arrayItem.stock > 0 && heartTokens >= arrayItem.price) {
+                heartTokens -= BigInt(arrayItem.price);
+                arrayItem.owned = 1;
+                arrayItem.stock--;
+                elem.setAttribute("onClick", "toggleAutoClaimer(this)");
+                elem.innerHTML = "On";
+            }
+            break;
+        }
         default: {
             console.log("elem.id: " + elem.id) ;
         }
@@ -68,6 +78,17 @@ function buy(elem) {
 
     updateBuyButtons();
     updateHeartTokenDisplay();
+}
+
+function toggleAutoClaimer(elem=null) {
+    let autoClaimer = findInShop("autoClaimer");
+    if (elem?.innerHTML == "On") {
+        elem.innerHTML = "Off";
+        autoClaimer.toggle = 0;
+    } else if (elem?.innerHTML == "Off") {
+        elem.innerHTML = "On";
+        autoClaimer.toggle = 1;
+    }
 }
 
 // TODO set cookies that save what items have been unlocked
@@ -108,6 +129,10 @@ function updateBuyButtons() {
     let kittyPawClaimButtonElem = document.getElementById("claimKittyPawsButton");
     if (heartTokens >= kittyPawPriceDynamic) {
         kittyPawClaimButtonElem.disabled = false;
+        let autoClaimer = findInShop("autoClaimer");
+        if (autoClaimer.owned && autoClaimer.toggle) {
+            incrementKittyPaws();
+        }
     } else {
         kittyPawClaimButtonElem.disabled = true;
     }
@@ -119,7 +144,13 @@ function updateBuyButtons() {
             itemElem.disabled = false;
         } else {
             let itemElem = document.getElementById(item.id);
-            itemElem.disabled = true;
+            let autoClaimer = findInShop("autoClaimer");
+
+            if (item.id == "autoClaimer" && autoClaimer.owned == 1) {
+                itemElem.disabled = false;
+            } else {
+                itemElem.disabled = true;
+            }
         }
     }
 }
@@ -250,6 +281,15 @@ var ShopItems =
     "owned": 0,
     "price": 100,
     "baseMod": 10000
+},
+// Automaically claims kitty paws when there's enough money to buy them
+{
+    "id": "autoClaimer",
+    "displayName": "Auto Claimer",
+    "owned": 0,
+    "price": 20,
+    "stock": 1,
+    "toggle": 1,
 }];
 
 function findInShop(itemID) {
