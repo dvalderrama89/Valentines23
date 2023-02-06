@@ -43,6 +43,7 @@ function update(timeStamp) {
 }
 
 // The id in the button HTML and the id in the ShopItems array of JSON objs has to match
+// TODO set cookies that save what items have been bought
 function buy(elem) {
     let arrayItem = findInShop(elem.id);
     switch (elem.id) {
@@ -69,6 +70,7 @@ function buy(elem) {
     updateHeartTokenDisplay();
 }
 
+// TODO set cookies that save what items have been unlocked
 function unlock(elem) {
     console.log("clicked");
 }
@@ -86,6 +88,8 @@ function incrementKittyPaws(elem=null) {
 // TODO: make this non linear later (maybe)
 function increaseKittyPawPrice() {
     kittyPawPriceDynamic += 1;
+    let kittyPawPriceButtonElem = document.getElementById("claimKittyPawsButton");
+    kittyPawPriceButtonElem.innerHTML = `-${kittyPawPriceDynamic}💖 Claim!`;
 }
 
 function updateHeartTokens(flatRateIncrement=0) {
