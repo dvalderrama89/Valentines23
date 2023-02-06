@@ -42,18 +42,22 @@ function update(timeStamp) {
     window.requestAnimationFrame(update);
 }
 
+// The id in the button HTML and the id in the ShopItems array of JSON objs has to match
 function buy(elem) {
+    let arrayItem = findInShop(elem.id);
     switch (elem.id) {
         case "plusOneBonus": {
-            let elem = findInShop("plusOneBonus");
-            if (heartTokens >= elem.price) {
-                heartTokens -= BigInt(elem.price);
+            if (heartTokens >= arrayItem.price) {
+                heartTokens -= BigInt(arrayItem.price);
                 flatRateHeartTokensBonus++;
             }
             break;
         }
         case "autoIncrementer": {
-            console.log("autoIncrementertest");
+            if (heartTokens >= arrayItem.price) {
+                heartTokens -= BigInt(arrayItem.price);
+                arrayItem.owned = 1;
+            }
             break;
         }
         default: {
