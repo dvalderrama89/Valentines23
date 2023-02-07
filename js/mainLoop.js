@@ -225,6 +225,10 @@ function renderShop() {
 function initializeModifiers() {
     if (getCookie("modifiers")) {
         modifiers = JSON.parse(getCookie("modifiers"));
+
+        // This may need to move elsewhere because it's only working here cos the currency is rendered statically
+        let kittyPawPriceButtonElem = document.getElementById("claimKittyPawsButton");
+        kittyPawPriceButtonElem.innerHTML = `-${modifiers.kittyPawPriceDynamic}💖 Claim!`;
     }
 }
 
