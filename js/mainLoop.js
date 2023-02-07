@@ -168,7 +168,7 @@ function updateKittyPaws(flatRateIncrement=0) {
 
 function updateKittyPawsDisplay() {
     let displayCounter = document.getElementById("kittyPaws");
-    displayCounter.innerHTML = `${modifiers.kittyPaws} 🐾`;
+    displayCounter.innerHTML = `${modifiers.kittyPaws} 👑`;
 }
 
 function initializeModifiers() {
@@ -298,7 +298,7 @@ function renderTreasureBox() {
         // second inner div
         let treasureBoxPriceDiv = document.createElement("div");
         treasureBoxPriceDiv.classList.add("push");
-        let treasureBoxPriceDisplayText = document.createTextNode(`${item.price}🐾`);
+        let treasureBoxPriceDisplayText = document.createTextNode(`${item.price}👑`);
         treasureBoxPriceDiv.append(treasureBoxPriceDisplayText);
 
         // third inner div (which has a button inside of it)
