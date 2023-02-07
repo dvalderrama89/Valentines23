@@ -1,19 +1,11 @@
-// let last = 0;
-// let heartTokens = BigInt(0); // hearts - accumulates into purchasing currency
-// let kittyPaws = 0; // the purchasing currency
-// let speed = .6; // Increases the rate that the timer on screen ticks up
-// let addHeartsMod = 1.0; // Increases the number of extra modifiers.heartTokens getting added at once (instead of hard capping at the frame rate being the max)
-// let flatRateHeartTokensBonus = BigInt(1);
-// let flatRateKittyPawsBonus = 1;
-// let kittyPawPriceDynamic = 10;
+let heartTokens = BigInt(0);
+let flatRateHeartTokensBonus = BigInt(1);
 
 let modifiers = {
     last: 0,
-    heartTokens: BigInt(0),
     kittyPaws: 0,
     speed: 0.6,
     addHeartsMod: 1.0,
-    flatRateHeartTokensBonus: BigInt(1),
     flatRateKittyPawsBonus: 1.0,
     kittyPawPriceDynamic: 10
 }
@@ -24,7 +16,7 @@ window.onload = (event) => {
 
 function start() {
     initializeModifiers();
-    initializeCounters();
+    initializeCurrencyAndBigInts();
     initializeShops();
     window.requestAnimationFrame(update);
 }
@@ -46,7 +38,7 @@ function update(timeStamp) {
     
     // Updates the flat rate increment text in the +X Hearts! Button when the player purchases upgrades
     let flatHeartTokensButtonElement = document.getElementById("plusOneHeartsButton");
-    flatHeartTokensButtonElement.innerHTML = `+${modifiers.flatRateHeartTokensBonus} Hearts!`;
+    flatHeartTokensButtonElement.innerHTML = `+${flatRateHeartTokensBonus} Hearts!`;
 
     window.requestAnimationFrame(update);
 }
@@ -57,22 +49,22 @@ function buy(elem) {
     let arrayItem = findInShop(elem.id);
     switch (elem.id) {
         case "plusOneBonus": {
-            if (modifiers.heartTokens >= arrayItem.price) {
-                modifiers.heartTokens -= BigInt(arrayItem.price);
-                modifiers.flatRateHeartTokensBonus++;
+            if (heartTokens >= arrayItem.price) {
+                heartTokens -= BigInt(arrayItem.price);
+                flatRateHeartTokensBonus++;
             }
             break;
         }
         case "autoIncrementer": {
-            if (modifiers.heartTokens >= arrayItem.price) {
-                modifiers.heartTokens -= BigInt(arrayItem.price);
+            if (heartTokens >= arrayItem.price) {
+                heartTokens -= BigInt(arrayItem.price);
                 arrayItem.owned = 1;
             }
             break;
         }
         case "autoClaimer": {
-            if (arrayItem.stock > 0 && modifiers.heartTokens >= arrayItem.price) {
-                modifiers.heartTokens -= BigInt(arrayItem.price);
+            if (arrayItem.stock > 0 && heartTokens >= arrayItem.price) {
+                heartTokens -= BigInt(arrayItem.price);
                 arrayItem.owned = 1;
                 arrayItem.stock--;
                 elem.setAttribute("onClick", "toggleAutoClaimer(this)");
@@ -106,7 +98,7 @@ function unlock(elem) {
 }
 
 function incrementHearts(elem) {
-    updateHeartTokens(modifiers.flatRateHeartTokensBonus);    
+    updateHeartTokens(flatRateHeartTokensBonus);    
 }
 
 function incrementKittyPaws(elem=null) {
@@ -124,19 +116,19 @@ function increaseKittyPawPrice() {
 
 function updateHeartTokens(flatRateIncrement=0) {
     if (flatRateIncrement) {
-        modifiers.heartTokens += BigInt(flatRateIncrement);
+        heartTokens += BigInt(flatRateIncrement);
     } else {
-        modifiers.heartTokens += BigInt(1*modifiers.addHeartsMod);
+        heartTokens += BigInt(1*modifiers.addHeartsMod);
     }
 
     updateBuyButtons();
-    setCookie("heartTokens", modifiers.heartTokens.toString(), 30);
+    setCookie("heartTokens", heartTokens.toString(), 30);
 }
 
 function updateBuyButtons() {
     // for kitty paw claim button
     let kittyPawClaimButtonElem = document.getElementById("claimKittyPawsButton");
-    if (modifiers.heartTokens >= modifiers.kittyPawPriceDynamic) {
+    if (heartTokens >= modifiers.kittyPawPriceDynamic) {
         kittyPawClaimButtonElem.disabled = false;
         let autoClaimer = findInShop("autoClaimer");
         if (autoClaimer.owned && autoClaimer.toggle) {
@@ -148,7 +140,7 @@ function updateBuyButtons() {
 
     // for buttons in the Shop
     for (let item of ShopItems) {
-        if (modifiers.heartTokens >= item.price) {
+        if (heartTokens >= item.price) {
             let itemElem = document.getElementById(item.id);
             itemElem.disabled = false;
         } else {
@@ -166,7 +158,7 @@ function updateBuyButtons() {
 
 function updateHeartTokenDisplay() {
     let displayCounter = document.getElementById("heartTokens");
-    displayCounter.innerHTML = `${modifiers.heartTokens} 💖`;
+    displayCounter.innerHTML = `${heartTokens} 💖`;
 }
 
 function updateKittyPaws(flatRateIncrement=0) {
@@ -236,17 +228,21 @@ function initializeModifiers() {
     }
 }
 
-function initializeCounters() {
+function initializeCurrencyAndBigInts() {
     // Initializes the cookies for currency if they don't exist
     console.log("initializing counters");
     if (getCookie("heartTokens")) {
         let heartTokenDisplay = document.getElementById("heartTokens");
-        modifiers.heartTokens = BigInt(parseInt(getCookie("heartTokens")));
+        heartTokens = BigInt(parseInt(getCookie("heartTokens")));
     }
 
     if (getCookie("kittyPaws")) {
         let kittyPawsDisplay = document.getElementById("kittyPaws");
         modifiers.kittyPaws = parseInt(getCookie("kittyPaws"));
+    }
+
+    if (getCookie("flatRateHeartTokensBonus")) {
+        flatRateHeartTokensBonus = BigInt(parseInt(getCookie("flatRateHeartTokensBonus")));
     }
 }
 
@@ -338,9 +334,12 @@ var TreasureBox = {
 }
 
 window.addEventListener("beforeunload", (event) => {
+    setCookie("modifiers", JSON.stringify(modifiers));
+    setCookie("heartTokens", heartTokens);
+    setCookie("flatRateHeartTokensBonus", flatRateHeartTokensBonus);
     setCookie("ShopItems", JSON.stringify(ShopItems));
     setCookie("TreasureBox", JSON.stringify(TreasureBox));
-    setCookie("modifiers", JSON.stringify(modifiers));
+    
 });
 
 
