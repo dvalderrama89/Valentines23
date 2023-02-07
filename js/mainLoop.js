@@ -171,57 +171,6 @@ function updateKittyPawsDisplay() {
     displayCounter.innerHTML = `${modifiers.kittyPaws} 🐾`;
 }
 
-// Update the shop dynamically every animation frame depending on what is in the ShopItems JSON
-function renderShop() {
-    let shopContainer = document.getElementById("shopContainer");
-
-    for (const item of ShopItems) {
-        // Check to see if the shop element already exists in the list, if it does get rid of it and render again
-        let itemElem = document.getElementById(item.id + "Item");
-        
-        if (itemElem != null) {
-            console.log("removing");
-            itemElem.remove();
-        }
-        // outer div
-        let shopItem = document.createElement("div");
-        shopItem.classList.add("purchase", "menu");
-        shopItem.setAttribute("id", item.id + "Item");
-
-        // first inner div
-        let shopItemDiv = document.createElement("div");
-        let shopItemDisplayText = document.createTextNode(item.displayName);
-        shopItemDiv.append(shopItemDisplayText);
-
-        // second inner div
-        let shopItemPriceDiv = document.createElement("div");
-        shopItemPriceDiv.classList.add("push");
-        let shopItemPriceDisplayText = document.createTextNode(`${item.price}💖`);
-        shopItemPriceDiv.append(shopItemPriceDisplayText);
-
-        // third inner div (which has a button inside of it)
-        let shopItemBuyDiv = document.createElement("div");
-        let shopItemBuyButton = document.createElement("button");
-        shopItemBuyButton.setAttribute("id", item.id);
-        shopItemBuyButton.setAttribute("type", "button");
-        shopItemBuyButton.setAttribute("onClick", "buy(this)");
-        shopItemBuyButton.classList.add("purchase");
-        shopItemBuyButton.disabled = true;
-        let shopItemBuyButtonDisplayText = document.createTextNode("Buy");
-        shopItemBuyButton.append(shopItemBuyButtonDisplayText);
-        shopItemBuyDiv.append(shopItemBuyButton);
-
-        // Combine the three divs to the outer div
-        shopItem.append(shopItemDiv);
-        shopItem.append(shopItemPriceDiv);
-        shopItem.append(shopItemBuyDiv);
-
-        // Final combine
-        shopContainer.append(shopItem);
-    }
-    
-}
-
 function initializeModifiers() {
     if (getCookie("modifiers")) {
         modifiers = JSON.parse(getCookie("modifiers"));
@@ -275,8 +224,112 @@ function initializeShops() {
     }
 }
 
+// Update the shop dynamically every animation frame depending on what is in the ShopItems JSON
+function renderShop() {
+    let shopContainer = document.getElementById("shopContainer");
+
+    for (const item of ShopItems) {
+        // Check to see if the shop element already exists in the list, if it does get rid of it and render again
+        let itemElem = document.getElementById(item.id + "Item");
+        
+        if (itemElem != null) {
+            console.log("removing");
+            itemElem.remove();
+        }
+        // outer div
+        let shopItem = document.createElement("div");
+        shopItem.classList.add("purchase", "menu");
+        shopItem.setAttribute("id", item.id + "Item");
+
+        // first inner div
+        let shopItemDiv = document.createElement("div");
+        let shopItemDisplayText = document.createTextNode(item.displayName);
+        shopItemDiv.append(shopItemDisplayText);
+
+        // second inner div
+        let shopItemPriceDiv = document.createElement("div");
+        shopItemPriceDiv.classList.add("push");
+        let shopItemPriceDisplayText = document.createTextNode(`${item.price}💖`);
+        shopItemPriceDiv.append(shopItemPriceDisplayText);
+
+        // third inner div (which has a button inside of it)
+        let shopItemBuyDiv = document.createElement("div");
+        let shopItemBuyButton = document.createElement("button");
+        shopItemBuyButton.setAttribute("id", item.id);
+        shopItemBuyButton.setAttribute("type", "button");
+        shopItemBuyButton.setAttribute("onClick", "buy(this)");
+        shopItemBuyButton.classList.add("purchase");
+        shopItemBuyButton.disabled = true;
+        let shopItemBuyButtonDisplayText = document.createTextNode("Buy");
+        shopItemBuyButton.append(shopItemBuyButtonDisplayText);
+        shopItemBuyDiv.append(shopItemBuyButton);
+
+        // Combine the three divs to the outer div
+        shopItem.append(shopItemDiv);
+        shopItem.append(shopItemPriceDiv);
+        shopItem.append(shopItemBuyDiv);
+
+        // Final combine
+        shopContainer.append(shopItem);
+    }
+}
+
 function renderTreasureBox() {
-    console.log("todo tb");
+    let treasureBoxContainer = document.getElementById("treasureBoxContainer");
+
+    for (const item of TreasureBox) {
+        // Check to see if the shop element already exists in the list, if it does get rid of it and render again
+        let itemElem = document.getElementById(item.id + "Item");
+        
+        if (itemElem != null) {
+            console.log("removing tb");
+            itemElem.remove();
+        }
+        // outer div
+        let treasureBoxItem = document.createElement("div");
+        treasureBoxItem.classList.add("purchase", "menu");
+        treasureBoxItem.setAttribute("id", item.id + "Item");
+
+        // first inner div
+        let treasureBoxItemDiv = document.createElement("div");
+        let treasureBoxDisplayText = document.createTextNode(item.displayName);
+        treasureBoxItemDiv.append(treasureBoxDisplayText);
+
+        // second inner div
+        let treasureBoxPriceDiv = document.createElement("div");
+        treasureBoxPriceDiv.classList.add("push");
+        let treasureBoxPriceDisplayText = document.createTextNode(`${item.price}🐾`);
+        treasureBoxPriceDiv.append(treasureBoxPriceDisplayText);
+
+        // third inner div (which has a button inside of it)
+        let treasureBoxBuyDiv = document.createElement("div");
+        let treasureBoxBuyButton = document.createElement("button");
+        treasureBoxBuyButton.setAttribute("id", item.id);
+        treasureBoxBuyButton.setAttribute("type", "button");
+        treasureBoxBuyButton.setAttribute("onClick", "unlock(this)");
+        treasureBoxBuyButton.classList.add("purchase");
+        treasureBoxBuyButton.disabled = true;
+
+        // anchor inside the button
+        let treasureBoxAnchor = document.createElement("a");
+        treasureBoxAnchor.setAttribute("href", "javascript:void(0)");
+
+        // Text inside the anchor
+        let treasureBoxBuyAnchorDisplayText = document.createTextNode("Unlock");
+        treasureBoxAnchor.append(treasureBoxBuyAnchorDisplayText);
+        treasureBoxBuyButton.append(treasureBoxAnchor);
+
+        // Append the button to the button div
+        treasureBoxBuyDiv.append(treasureBoxBuyButton);
+
+        // Combine the three divs to the outer div
+        treasureBoxItem.append(treasureBoxItemDiv);
+        treasureBoxItem.append(treasureBoxPriceDiv);
+        treasureBoxItem.append(treasureBoxBuyDiv);
+
+        // Final combine
+        treasureBoxContainer.append(treasureBoxItem);
+    }   
 }
 
 function setCookie(cookieName, cookieValue, numDaysToExpire) {
@@ -330,13 +383,22 @@ function findInShop(itemID) {
     return ShopItems.find(item => item.id == itemID);
 }
 
-var TreasureBox = {
-    "audiobook": {
-        "title": "HPCh1",
-        "displayName": "Harry Potter - The Sorcerer's Stone Chapter 1 Audiobook",
-        "filePath": "rewards/testFileHP1.mp3"
-    }
-}
+var TreasureBox = 
+[{
+    "id": "hpChapter1",
+    "displayName": "Audiobook - Chapter 1",
+    "owned": 0,
+    "price": 10,
+    "filePath": "rewards/testFileHP1.mp3"
+},
+{
+    "id": "test1",
+    "displayName": "Test - Test Test 1",
+    "owned": 0,
+    "price": 50,
+    "filePath": "rewards/testFileHP1.mp3"
+}];
+
 
 window.addEventListener("beforeunload", (event) => {
     setCookie("modifiers", JSON.stringify(modifiers));
