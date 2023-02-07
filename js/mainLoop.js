@@ -266,6 +266,7 @@ function initializeShops() {
     if (findInShop("autoClaimer").owned) {
         let elem = document.getElementById("autoClaimer");
         elem.setAttribute("onClick", "toggleAutoClaimer(this)");
+        elem.removeAttribute("disabled");
         if (findInShop("autoClaimer").toggle) {
             elem.innerHTML = "On";
         } else {
