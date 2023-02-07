@@ -253,16 +253,6 @@ function initializeCounters() {
 function initializeShops() {
     if (getCookie("ShopItems")) {
         ShopItems = JSON.parse(getCookie("ShopItems"));
-
-        if (findInShop("autoClaimer").owned) {
-            let elem = document.getElementById("autoClaimer");
-            elem.setAttribute("onClick", "toggleAutoClaimer(this)");
-            if (findInShop("autoClaimer").toggle) {
-                elem.innerHTML = "On";
-            } else {
-                elem.innerHTML = "Off";
-            }
-        }
     }
 
     if (getCookie("TreasureBox")) {
@@ -271,6 +261,17 @@ function initializeShops() {
 
     renderShop();
     renderTreasureBox();
+
+    // This only works after the shop has rendered because otherwise there's no elements in the DOM to grab
+    if (findInShop("autoClaimer").owned) {
+        let elem = document.getElementById("autoClaimer");
+        elem.setAttribute("onClick", "toggleAutoClaimer(this)");
+        if (findInShop("autoClaimer").toggle) {
+            elem.innerHTML = "On";
+        } else {
+            elem.innerHTML = "Off";
+        }
+    }
 }
 
 function renderTreasureBox() {
