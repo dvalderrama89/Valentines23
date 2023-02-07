@@ -233,18 +233,33 @@ function initializeCounters() {
         let kittyPawsDisplay = document.getElementById("kittyPaws");
         kittyPaws = parseInt(getCookie("kittyPaws"));
     }
+}
 
+function initializeShops() {
     if (getCookie("ShopItems")) {
         ShopItems = JSON.parse(getCookie("ShopItems"));
+
+        if (findInShop("autoClaimer").owned) {
+            let elem = document.getElementById("autoClaimer");
+            elem.setAttribute("onClick", "toggleAutoClaimer(this)");
+            if (findInShop("autoClaimer").toggle) {
+                elem.innerHTML = "On";
+            } else {
+                elem.innerHTML = "Off";
+            }
+        }
     }
 
     if (getCookie("TreasureBox")) {
         TreasureBox = JSON.parse(getCookie("TreasureBox"));
     }
+
+    renderShop();
+    renderTreasureBox();
 }
 
-function initializeShops() {
-    renderShop();
+function renderTreasureBox() {
+    console.log("todo tb");
 }
 
 function setCookie(cookieName, cookieValue, numDaysToExpire) {
