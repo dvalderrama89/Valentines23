@@ -356,7 +356,7 @@ function getCookie(cookieName) {
 var ShopItems = 
 [{
     "id": "plusOneBonus",
-    "displayName": "Manual Increment Bonus +1",
+    "displayName": "Click Bonus +1",
     "owned": 0,
     "price": 10,
     "increase": 1 
@@ -364,7 +364,7 @@ var ShopItems =
 // This automatically generates heart tokens on a given interval dictated by the baseMod and other mod vars
 {
     "id": "autoIncrementer",
-    "displayName": "Auto Increment +1",
+    "displayName": "Autoclick +1",
     "owned": 0,
     "price": 100,
     "baseMod": 10000
