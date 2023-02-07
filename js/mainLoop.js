@@ -127,14 +127,17 @@ function updateHeartTokens(flatRateIncrement=0) {
 
 function updateBuyButtons() {
     // for kitty paw claim button
+    console.log("updating buybuttons");
     let kittyPawClaimButtonElem = document.getElementById("claimKittyPawsButton");
     if (heartTokens >= modifiers.kittyPawPriceDynamic) {
+        console.log("enabling claim button");
         kittyPawClaimButtonElem.disabled = false;
         let autoClaimer = findInShop("autoClaimer");
         if (autoClaimer.owned && autoClaimer.toggle) {
             incrementKittyPaws();
         }
     } else {
+        console.log("disabling claim button");
         kittyPawClaimButtonElem.disabled = true;
     }
 
@@ -148,8 +151,10 @@ function updateBuyButtons() {
             let autoClaimer = findInShop("autoClaimer");
 
             if (item.id == "autoClaimer" && autoClaimer.owned == 1) {
+                console.log("bb - enabling autoclaim");
                 itemElem.disabled = false;
             } else {
+                console.log("bb - disabling autoclaim");
                 itemElem.disabled = true;
             }
         }
@@ -173,6 +178,7 @@ function updateKittyPawsDisplay() {
 
 function initializeModifiers() {
     if (getCookie("modifiers")) {
+        console.log("init mods");
         modifiers = JSON.parse(getCookie("modifiers"));
 
         // This may need to move elsewhere because it's only working here cos the currency is rendered statically
@@ -185,26 +191,31 @@ function initializeCurrencyAndBigInts() {
     // Initializes the cookies for currency if they don't exist
     console.log("initializing counters");
     if (getCookie("heartTokens")) {
+        console.log("init hearts");
         let heartTokenDisplay = document.getElementById("heartTokens");
         heartTokens = BigInt(parseInt(getCookie("heartTokens")));
     }
 
     if (getCookie("kittyPaws")) {
+        console.log("init kittys");
         let kittyPawsDisplay = document.getElementById("kittyPaws");
         modifiers.kittyPaws = parseInt(getCookie("kittyPaws"));
     }
 
     if (getCookie("flatRateHeartTokensBonus")) {
+        console.log("init flat rate");
         flatRateHeartTokensBonus = BigInt(parseInt(getCookie("flatRateHeartTokensBonus")));
     }
 }
 
 function initializeShops() {
     if (getCookie("ShopItems")) {
+        console.log("init shopitems");
         ShopItems = JSON.parse(getCookie("ShopItems"));
     }
 
     if (getCookie("TreasureBox")) {
+        console.log("init treasure box");
         TreasureBox = JSON.parse(getCookie("TreasureBox"));
     }
 
@@ -213,6 +224,7 @@ function initializeShops() {
 
     // This only works after the shop has rendered because otherwise there's no elements in the DOM to grab
     if (findInShop("autoClaimer").owned) {
+        console.log("init autoclaimer");
         let elem = document.getElementById("autoClaimer");
         elem.setAttribute("onClick", "toggleAutoClaimer(this)");
         elem.removeAttribute("disabled");
@@ -226,6 +238,7 @@ function initializeShops() {
 
 // Update the shop dynamically every animation frame depending on what is in the ShopItems JSON
 function renderShop() {
+    console.log("rendering shop");
     let shopContainer = document.getElementById("shopContainer");
 
     for (const item of ShopItems) {
@@ -275,6 +288,7 @@ function renderShop() {
 }
 
 function renderTreasureBox() {
+    console.log("rendering treasure box");
     let treasureBoxContainer = document.getElementById("treasureBoxContainer");
 
     for (const item of TreasureBox) {
