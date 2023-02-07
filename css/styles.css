@@ -11,18 +11,19 @@ body {
     font-family: "Adventure Request";
     font-size: larger;
     background-color: antiquewhite;
+    color: rgb(57, 56, 93);
     
 }
 
 button {
     font-family: "Adventure Request";
     font-size: medium;
-    background-color: rgb(217, 237, 214);
-    border-color: rgb(217, 237, 214);
+    background-color: rgb(255 213 142);
+    border-color: rgb(255 213 142);
 }
 
 button:active {
-    background-color: rgb(237, 231, 190);
+    background-color: rgb(226, 245, 216);
 }
 
 .currency {
