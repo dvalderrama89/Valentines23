@@ -224,20 +224,22 @@ function renderShop() {
 function initializeCounters() {
     // Initializes the cookies for currency if they don't exist
     console.log("initializing counters");
-    if (!getCookie("heartTokens")) {
-        console.log("initializing hearts to 0");
-        setCookie("heartTokens", 0, 30);
-    } else {
+    if (getCookie("heartTokens")) {
         let heartTokenDisplay = document.getElementById("heartTokens");
         heartTokens = BigInt(parseInt(getCookie("heartTokens")));
     }
 
-    if (!getCookie("kittyPaws")) {
-        console.log("initializing paws to 0");
-        setCookie("kittyPaws", 0, 30);
-    } else {
+    if (getCookie("kittyPaws")) {
         let kittyPawsDisplay = document.getElementById("kittyPaws");
         kittyPaws = parseInt(getCookie("kittyPaws"));
+    }
+
+    if (getCookie("ShopItems")) {
+        ShopItems = JSON.parse(getCookie("ShopItems"));
+    }
+
+    if (getCookie("TreasureBox")) {
+        TreasureBox = JSON.parse(getCookie("TreasureBox"));
     }
 }
 
@@ -303,6 +305,11 @@ var TreasureBox = {
         "filePath": "rewards/testFileHP1.mp3"
     }
 }
+
+window.addEventListener("beforeunload", (event) => {
+    setCookie("ShopItems", JSON.stringify(ShopItems));
+    setCookie("TreasureBox", JSON.stringify(TreasureBox));
+});
 
 
 // TODO: add more shop items (convert manual kitty paw redeem to auto), add random event mechanic, add reward shop
