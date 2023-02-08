@@ -420,12 +420,17 @@ var TreasureBox =
 
 
 window.addEventListener("beforeunload", (event) => {
-    setCookie("modifiers", JSON.stringify(modifiers));
-    setCookie("heartTokens", heartTokens);
-    setCookie("flatRateHeartTokensBonus", flatRateHeartTokensBonus);
-    setCookie("ShopItems", JSON.stringify(ShopItems));
-    setCookie("TreasureBox", JSON.stringify(TreasureBox));
-    
+    try {
+        setCookie("modifiers", JSON.stringify(modifiers));
+        setCookie("heartTokens", heartTokens);
+        setCookie("flatRateHeartTokensBonus", flatRateHeartTokensBonus);
+        setCookie("ShopItems", JSON.stringify(ShopItems));
+        setCookie("TreasureBox", JSON.stringify(TreasureBox));
+    } catch (e) {
+        console.log(e);
+    } finally {
+        console.log("Cookies saved");
+    }
 });
 
 
