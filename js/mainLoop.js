@@ -122,7 +122,6 @@ function updateHeartTokens(flatRateIncrement=0) {
     }
 
     updateBuyButtons();
-    setCookie("heartTokens", heartTokens.toString(), 30);
 }
 
 function updateBuyButtons() {
