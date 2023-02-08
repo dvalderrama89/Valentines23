@@ -128,6 +128,7 @@ function updateHeartTokens(flatRateIncrement=0) {
 function updateBuyButtons() {
     // for kitty paw claim button
     console.log("updating buybuttons");
+    console.log("contents of shop cookie: " + getCookie("ShopItems"));
     let kittyPawClaimButtonElem = document.getElementById("claimKittyPawsButton");
     if (heartTokens >= modifiers.kittyPawPriceDynamic) {
         console.log("enabling claim button");
@@ -142,7 +143,9 @@ function updateBuyButtons() {
     }
 
     // for buttons in the Shop
+    console.log("updating shop buttons");
     for (let item of ShopItems) {
+        console.log("item: " + item.id);
         if (heartTokens >= item.price) {
             let itemElem = document.getElementById(item.id);
             itemElem.disabled = false;
@@ -158,6 +161,7 @@ function updateBuyButtons() {
             }
         }
     }
+    console.log("done - updating shop buttons");
 }
 
 function updateHeartTokenDisplay() {
