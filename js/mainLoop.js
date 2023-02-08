@@ -351,7 +351,7 @@ function renderTreasureBox() {
     }   
 }
 
-function setCookie(cookieName, cookieValue, numDaysToExpire) {
+function setCookie(cookieName, cookieValue, numDaysToExpire=30) {
     const d = new Date();
     d.setTime(d.getTime() + (numDaysToExpire*24*60*60*1000));
     let expires = "expires="+ d.toUTCString();
