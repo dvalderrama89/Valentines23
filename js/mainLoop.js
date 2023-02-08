@@ -154,7 +154,6 @@ function updateBuyButtons() {
                 console.log("bb - enabling autoclaim");
                 itemElem.disabled = false;
             } else {
-                console.log("bb - disabling autoclaim");
                 itemElem.disabled = true;
             }
         }
@@ -234,6 +233,8 @@ function initializeShops() {
             elem.innerHTML = "Off";
         }
     }
+
+    updateBuyButtons();
 }
 
 // Update the shop dynamically every animation frame depending on what is in the ShopItems JSON
