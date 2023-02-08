@@ -3,11 +3,11 @@ let flatRateHeartTokensBonus = BigInt(1);
 
 let modifiers = {
     last: 0,
-    kittyPaws: 0,
+    crowns: 0,
     speed: 0.6,
     addHeartsMod: 1.0,
-    flatRateKittyPawsBonus: 1.0,
-    kittyPawPriceDynamic: 10
+    crownsFlatRateBonus: 1.0,
+    crownsPriceDynamic: 10
 }
 
 window.onload = (event) => {
@@ -29,12 +29,12 @@ function update(timeStamp) {
         if (timeInSeconds - modifiers.last >= modifiers.speed) {
             modifiers.last = timeInSeconds;
             updateHeartTokens();
-            updateKittyPaws();
+            updateCrowns();
         }
     }
 
     updateHeartTokenDisplay();
-    updateKittyPawsDisplay();
+    updateCrownsDisplay();
     
     // Updates the flat rate increment text in the +X Hearts! Button when the player purchases upgrades
     let flatHeartTokensButtonElement = document.getElementById("plusOneHeartsButton");
@@ -101,17 +101,17 @@ function incrementHearts(elem) {
     updateHeartTokens(flatRateHeartTokensBonus);    
 }
 
-function incrementKittyPaws(elem=null) {
-    updateHeartTokens(-1 * modifiers.kittyPawPriceDynamic);
-    updateKittyPaws(modifiers.flatRateKittyPawsBonus);
-    increaseKittyPawPrice();
+function incrementCrowns(elem=null) {
+    updateHeartTokens(-1 * modifiers.crownsPriceDynamic);
+    updateCrowns(modifiers.crownsFlatRateBonus);
+    incrementCrownPrice();
 }
 
 // TODO: make this non linear later (maybe)
-function increaseKittyPawPrice() {
-    modifiers.kittyPawPriceDynamic += 1;
-    let kittyPawPriceButtonElem = document.getElementById("claimKittyPawsButton");
-    kittyPawPriceButtonElem.innerHTML = `-${modifiers.kittyPawPriceDynamic}💖 Claim!`;
+function incrementCrownPrice() {
+    modifiers.crownsPriceDynamic += 1;
+    let crownPriceButtonElem = document.getElementById("crownClaimButton");
+    crownPriceButtonElem.innerHTML = `-${modifiers.crownsPriceDynamic}💖 Claim!`;
 }
 
 function updateHeartTokens(flatRateIncrement=0) {
@@ -126,20 +126,20 @@ function updateHeartTokens(flatRateIncrement=0) {
 }
 
 function updateBuyButtons() {
-    // for kitty paw claim button
+    // for crown claim button
     console.log("updating buybuttons");
     console.log("contents of shop cookie: " + getCookie("ShopItems"));
-    let kittyPawClaimButtonElem = document.getElementById("claimKittyPawsButton");
-    if (heartTokens >= modifiers.kittyPawPriceDynamic) {
+    let crownClaimButtonElem = document.getElementById("crownClaimButton");
+    if (heartTokens >= modifiers.crownsPriceDynamic) {
         console.log("enabling claim button");
-        kittyPawClaimButtonElem.disabled = false;
+        crownClaimButtonElem.disabled = false;
         let autoClaimer = findInShop("autoClaimer");
         if (autoClaimer.owned && autoClaimer.toggle) {
-            incrementKittyPaws();
+            incrementCrowns();
         }
     } else {
         console.log("disabling claim button");
-        kittyPawClaimButtonElem.disabled = true;
+        crownClaimButtonElem.disabled = true;
     }
 
     // for buttons in the Shop
@@ -169,14 +169,13 @@ function updateHeartTokenDisplay() {
     displayCounter.innerHTML = `${heartTokens} 💖`;
 }
 
-function updateKittyPaws(flatRateIncrement=0) {
-    modifiers.kittyPaws += flatRateIncrement;
-    setCookie("kittyPaws", modifiers.kittyPaws.toString(), 30);
+function updateCrowns(flatRateIncrement=0) {
+    modifiers.crowns += flatRateIncrement;
 }
 
-function updateKittyPawsDisplay() {
-    let displayCounter = document.getElementById("kittyPaws");
-    displayCounter.innerHTML = `${modifiers.kittyPaws} 👑`;
+function updateCrownsDisplay() {
+    let displayCounter = document.getElementById("crowns");
+    displayCounter.innerHTML = `${modifiers.crowns} 👑`;
 }
 
 function initializeModifiers() {
@@ -185,8 +184,8 @@ function initializeModifiers() {
         modifiers = JSON.parse(getCookie("modifiers"));
 
         // This may need to move elsewhere because it's only working here cos the currency is rendered statically
-        let kittyPawPriceButtonElem = document.getElementById("claimKittyPawsButton");
-        kittyPawPriceButtonElem.innerHTML = `-${modifiers.kittyPawPriceDynamic}💖 Claim!`;
+        let crownPriceButtonElem = document.getElementById("crownClaimButton");
+        crownPriceButtonElem.innerHTML = `-${modifiers.crownsPriceDynamic}💖 Claim!`;
     }
 }
 
@@ -199,10 +198,10 @@ function initializeCurrencyAndBigInts() {
         heartTokens = BigInt(parseInt(getCookie("heartTokens")));
     }
 
-    if (getCookie("kittyPaws")) {
-        console.log("init kittys");
-        let kittyPawsDisplay = document.getElementById("kittyPaws");
-        modifiers.kittyPaws = parseInt(getCookie("kittyPaws"));
+    if (getCookie("crowns")) {
+        console.log("init crowns");
+        let crownDisplayElem = document.getElementById("crowns");
+        modifiers.crowns = parseInt(getCookie("crowns"));
     }
 
     if (getCookie("flatRateHeartTokensBonus")) {
@@ -388,7 +387,7 @@ var ShopItems =
     "price": 100,
     "baseMod": 10000
 },
-// Automaically claims kitty paws when there's enough money to buy them
+// Automaically claims crowns when there's enough money to buy them
 {
     "id": "autoClaimer",
     "displayName": "Auto Claimer",
@@ -433,7 +432,3 @@ window.addEventListener(terminationEvent, (event) => {
         console.log("Cookies saved");
     }
 });
-
-
-// TODO: add more shop items (convert manual kitty paw redeem to auto), add random event mechanic, add reward shop
-// bugs: currency cookie isn't updated after purchasing from shop
