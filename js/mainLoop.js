@@ -127,25 +127,19 @@ function updateHeartTokens(flatRateIncrement=0) {
 
 function updateBuyButtons() {
     // for crown claim button
-    console.log("updating buybuttons");
-    console.log("contents of shop cookie: " + getCookie("ShopItems"));
     let crownClaimButtonElem = document.getElementById("crownClaimButton");
     if (heartTokens >= modifiers.crownsPriceDynamic) {
-        console.log("enabling claim button");
         crownClaimButtonElem.disabled = false;
         let autoClaimer = findInShop("autoClaimer");
         if (autoClaimer.owned && autoClaimer.toggle) {
             incrementCrowns();
         }
     } else {
-        console.log("disabling claim button");
         crownClaimButtonElem.disabled = true;
     }
 
     // for buttons in the Shop
-    console.log("updating shop buttons");
     for (let item of ShopItems) {
-        console.log("item: " + item.id);
         if (heartTokens >= item.price) {
             let itemElem = document.getElementById(item.id);
             itemElem.disabled = false;
@@ -154,14 +148,12 @@ function updateBuyButtons() {
             let autoClaimer = findInShop("autoClaimer");
 
             if (item.id == "autoClaimer" && autoClaimer.owned == 1) {
-                console.log("bb - enabling autoclaim");
                 itemElem.disabled = false;
             } else {
                 itemElem.disabled = true;
             }
         }
     }
-    console.log("done - updating shop buttons");
 }
 
 function updateHeartTokenDisplay() {
@@ -180,7 +172,6 @@ function updateCrownsDisplay() {
 
 function initializeModifiers() {
     if (getCookie("modifiers")) {
-        console.log("init mods");
         modifiers = JSON.parse(getCookie("modifiers"));
 
         // This may need to move elsewhere because it's only working here cos the currency is rendered statically
@@ -191,33 +182,27 @@ function initializeModifiers() {
 
 function initializeCurrencyAndBigInts() {
     // Initializes the cookies for currency if they don't exist
-    console.log("initializing counters");
     if (getCookie("heartTokens")) {
-        console.log("init hearts");
         let heartTokenDisplay = document.getElementById("heartTokens");
         heartTokens = BigInt(parseInt(getCookie("heartTokens")));
     }
 
     if (getCookie("crowns")) {
-        console.log("init crowns");
         let crownDisplayElem = document.getElementById("crowns");
         modifiers.crowns = parseInt(getCookie("crowns"));
     }
 
     if (getCookie("flatRateHeartTokensBonus")) {
-        console.log("init flat rate");
         flatRateHeartTokensBonus = BigInt(parseInt(getCookie("flatRateHeartTokensBonus")));
     }
 }
 
 function initializeShops() {
     if (getCookie("ShopItems")) {
-        console.log("init shopitems");
         ShopItems = JSON.parse(getCookie("ShopItems"));
     }
 
     if (getCookie("TreasureBox")) {
-        console.log("init treasure box");
         TreasureBox = JSON.parse(getCookie("TreasureBox"));
     }
 
@@ -226,7 +211,6 @@ function initializeShops() {
 
     // This only works after the shop has rendered because otherwise there's no elements in the DOM to grab
     if (findInShop("autoClaimer").owned) {
-        console.log("init autoclaimer");
         let elem = document.getElementById("autoClaimer");
         elem.setAttribute("onClick", "toggleAutoClaimer(this)");
         elem.removeAttribute("disabled");
@@ -242,7 +226,6 @@ function initializeShops() {
 
 // Update the shop dynamically every animation frame depending on what is in the ShopItems JSON
 function renderShop() {
-    console.log("rendering shop");
     let shopContainer = document.getElementById("shopContainer");
 
     for (const item of ShopItems) {
@@ -250,7 +233,6 @@ function renderShop() {
         let itemElem = document.getElementById(item.id + "Item");
         
         if (itemElem != null) {
-            console.log("removing");
             itemElem.remove();
         }
         // outer div
@@ -292,7 +274,6 @@ function renderShop() {
 }
 
 function renderTreasureBox() {
-    console.log("rendering treasure box");
     let treasureBoxContainer = document.getElementById("treasureBoxContainer");
 
     for (const item of TreasureBox) {
@@ -300,7 +281,6 @@ function renderTreasureBox() {
         let itemElem = document.getElementById(item.id + "Item");
         
         if (itemElem != null) {
-            console.log("removing tb");
             itemElem.remove();
         }
         // outer div
