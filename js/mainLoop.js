@@ -419,7 +419,8 @@ var TreasureBox =
 }];
 
 
-window.addEventListener("beforeunload", (event) => {
+const terminationEvent = 'onpagehide' in self ? 'pagehide' : 'unload';
+window.addEventListener(terminationEvent, (event) => {
     try {
         setCookie("modifiers", JSON.stringify(modifiers));
         setCookie("heartTokens", heartTokens);
