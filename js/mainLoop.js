@@ -93,8 +93,27 @@ function toggleAutoClaimer(elem=null) {
 }
 
 // TODO set cookies that save what items have been unlocked
+// TODO figure out bug where the javascript void prevents the reward from launching
 function unlock(elem) {
-    console.log("clicked");
+    switch(elem.id) {
+        case "hpChapter1": {
+            if (modifiers.crowns >= findInTreasureBox(elem.id).price) {
+                findInTreasureBox(elem.id).owned = 1;
+                updateCrowns(-1 * findInTreasureBox(elem.id).price);
+            }
+            break;
+        }
+        case "test1": {
+            if (modifiers.crowns >= findInTreasureBox(elem.id).price) {
+                findInTreasureBox(elem.id).owned = 1;
+                updateCrowns(-1 * findInTreasureBox(elem.id).price);
+            }
+            break;
+        }
+        default: {
+            console.log(elem.id);
+        }
+    }
 }
 
 function incrementHearts(elem) {
@@ -162,6 +181,23 @@ function updateHeartTokenDisplay() {
 
 function updateCrowns(flatRateIncrement=0) {
     modifiers.crowns += flatRateIncrement;
+    updateCrownButtons();
+}
+
+function updateCrownButtons() {
+    for (let treasure of TreasureBox) {
+        let buttonElem = document.getElementById(treasure.id);
+        let crownAnchor = buttonElem.firstChild;
+        if (modifiers.crowns >= treasure.price) {
+            buttonElem.disabled = false;
+            crownAnchor.setAttribute("href", treasure.filePath);
+            crownAnchor.setAttribute("target", "_blank");
+        } else {
+            buttonElem.disabled = true;
+            crownAnchor.setAttribute("href", "javascript:void(0)");
+            crownAnchor.removeAttribute("target");
+        }
+    }
 }
 
 function updateCrownsDisplay() {
@@ -380,20 +416,24 @@ function findInShop(itemID) {
     return ShopItems.find(item => item.id == itemID);
 }
 
+function findInTreasureBox(itemID) {
+    return TreasureBox.find(item => item.id == itemID);
+}
+
 var TreasureBox = 
 [{
     "id": "hpChapter1",
     "displayName": "Audiobook - Chapter 1",
     "owned": 0,
-    "price": 10,
+    "price": 1,
     "filePath": "rewards/testFileHP1.mp3"
 },
 {
     "id": "test1",
     "displayName": "Test - Test Test 1",
     "owned": 0,
-    "price": 50,
-    "filePath": "rewards/testFileHP1.mp3"
+    "price": 2,
+    "filePath": "rewards/test.mp3"
 }];
 
 
