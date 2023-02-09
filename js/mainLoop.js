@@ -95,18 +95,24 @@ function toggleAutoClaimer(elem=null) {
 // TODO set cookies that save what items have been unlocked
 // TODO figure out bug where the javascript void prevents the reward from launching
 function unlock(elem) {
+    let treasureBoxItem = findInTreasureBox(elem.id);
+    let parentDiv = document.getElementById(elem.id + "Item");
     switch(elem.id) {
         case "hpChapter1": {
-            if (modifiers.crowns >= findInTreasureBox(elem.id).price) {
-                findInTreasureBox(elem.id).owned = 1;
-                updateCrowns(-1 * findInTreasureBox(elem.id).price);
+            if (!treasureBoxItem.owned && modifiers.crowns >= treasureBoxItem.price) {
+                treasureBoxItem.owned = 1;
+                updateCrowns(-1 * treasureBoxItem.price);
+                elem.innerHTML = "Owned";
+                addViewButtonToDOM(parentDiv, treasureBoxItem);
             }
             break;
         }
         case "test1": {
-            if (modifiers.crowns >= findInTreasureBox(elem.id).price) {
-                findInTreasureBox(elem.id).owned = 1;
-                updateCrowns(-1 * findInTreasureBox(elem.id).price);
+            if (!treasureBoxItem.owned && modifiers.crowns >= treasureBoxItem.price) {
+                treasureBoxItem.owned = 1;
+                updateCrowns(-1 * treasureBoxItem.price);
+                elem.innerHTML = "Owned";
+                addViewButtonToDOM(parentDiv, treasureBoxItem);
             }
             break;
         }
@@ -114,6 +120,23 @@ function unlock(elem) {
             console.log(elem.id);
         }
     }
+}
+
+function addViewButtonToDOM(parentDiv, treasureBoxItem) {
+    // add the View button
+    let viewButtonElem = document.createElement("button");
+
+    // add the anchor that will have the links to the treasure
+    let anchorElem = document.createElement("a");
+    anchorElem.setAttribute("target", "_blank");
+    anchorElem.setAttribute("href", treasureBoxItem.filePath);
+    let viewAnchorDisplayText = document.createTextNode("View");
+    anchorElem.append(viewAnchorDisplayText);
+
+    // combine them
+    viewButtonElem.append(anchorElem);
+    viewButtonElem.classList.add("purchase");
+    parentDiv.append(viewButtonElem);
 }
 
 function incrementHearts(elem) {
@@ -188,14 +211,10 @@ function updateCrownButtons() {
     for (let treasure of TreasureBox) {
         let buttonElem = document.getElementById(treasure.id);
         let crownAnchor = buttonElem.firstChild;
-        if (modifiers.crowns >= treasure.price) {
+        if (!treasure.owned && modifiers.crowns >= treasure.price) {
             buttonElem.disabled = false;
-            crownAnchor.setAttribute("href", treasure.filePath);
-            crownAnchor.setAttribute("target", "_blank");
         } else {
             buttonElem.disabled = true;
-            crownAnchor.setAttribute("href", "javascript:void(0)");
-            crownAnchor.removeAttribute("target");
         }
     }
 }
@@ -257,6 +276,18 @@ function initializeShops() {
     }
 
     updateBuyButtons();
+
+    for (const treasure of TreasureBox) {
+        initOwnedTreasureBoxItems(treasure);
+    }
+}
+
+function initOwnedTreasureBoxItems(item) {    
+    if (item.owned) {
+        let parentDiv = document.getElementById(item.id + "Item");
+        document.getElementById(item.id).innerHTML = "Owned";
+        addViewButtonToDOM(parentDiv, item);
+    }
 }
 
 // Update the shop dynamically every animation frame depending on what is in the ShopItems JSON
@@ -342,15 +373,8 @@ function renderTreasureBox() {
         treasureBoxBuyButton.setAttribute("onClick", "unlock(this)");
         treasureBoxBuyButton.classList.add("purchase");
         treasureBoxBuyButton.disabled = true;
-
-        // anchor inside the button
-        let treasureBoxAnchor = document.createElement("a");
-        treasureBoxAnchor.setAttribute("href", "javascript:void(0)");
-
-        // Text inside the anchor
-        let treasureBoxBuyAnchorDisplayText = document.createTextNode("Unlock");
-        treasureBoxAnchor.append(treasureBoxBuyAnchorDisplayText);
-        treasureBoxBuyButton.append(treasureBoxAnchor);
+        let treasureBoxBuyButtonDisplayText = document.createTextNode("Unlock");
+        treasureBoxBuyButton.append(treasureBoxBuyButtonDisplayText);
 
         // Append the button to the button div
         treasureBoxBuyDiv.append(treasureBoxBuyButton);
