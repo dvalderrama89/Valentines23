@@ -100,6 +100,7 @@ function unlock(elem) {
                 treasureBoxItem.owned = 1;
                 updateCrowns(-1 * treasureBoxItem.price);
                 elem.remove(); // these removals save space on the screen on mobile
+                document.getElementById(elem.id + "Price").innerHTML = ""; // Removes the price of the item because it's owned
                 addViewButtonToDOM(parentDiv, treasureBoxItem);
             }
             break;
@@ -109,6 +110,7 @@ function unlock(elem) {
                 treasureBoxItem.owned = 1;
                 updateCrowns(-1 * treasureBoxItem.price);
                 elem.remove();
+                document.getElementById(elem.id + "Price").innerHTML = "";
                 addViewButtonToDOM(parentDiv, treasureBoxItem);
             }
             break;
@@ -283,6 +285,7 @@ function initOwnedTreasureBoxItems(item) {
     if (item.owned) {
         let parentDiv = document.getElementById(item.id + "Item");
         document.getElementById(item.id).remove(); // removes all buttons that say "unlock" if the item is owned
+        document.getElementById(item.id + "Price").innerHTML = ""; // remove item price so it doesn't look like you have to pay to View
         addViewButtonToDOM(parentDiv, item);
     }
 }
@@ -356,9 +359,10 @@ function renderTreasureBox() {
         let treasureBoxDisplayText = document.createTextNode(item.displayName);
         treasureBoxItemDiv.append(treasureBoxDisplayText);
 
-        // second inner div
+        // second inner div (price)
         let treasureBoxPriceDiv = document.createElement("div");
         treasureBoxPriceDiv.classList.add("push");
+        treasureBoxPriceDiv.setAttribute("id", item.id + "Price");
         let treasureBoxPriceDisplayText = document.createTextNode(`${item.price}👑`);
         treasureBoxPriceDiv.append(treasureBoxPriceDisplayText);
 
