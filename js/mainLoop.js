@@ -44,7 +44,6 @@ function update(timeStamp) {
 }
 
 // The id in the button HTML and the id in the ShopItems array of JSON objs has to match
-// TODO set cookies that save what items have been bought
 function buy(elem) {
     let arrayItem = findInShop(elem.id);
     switch (elem.id) {
@@ -92,8 +91,6 @@ function toggleAutoClaimer(elem=null) {
     }
 }
 
-// TODO set cookies that save what items have been unlocked
-// TODO figure out bug where the javascript void prevents the reward from launching
 function unlock(elem) {
     let treasureBoxItem = findInTreasureBox(elem.id);
     let parentDiv = document.getElementById(elem.id + "Item");
@@ -102,7 +99,7 @@ function unlock(elem) {
             if (!treasureBoxItem.owned && modifiers.crowns >= treasureBoxItem.price) {
                 treasureBoxItem.owned = 1;
                 updateCrowns(-1 * treasureBoxItem.price);
-                elem.innerHTML = "Owned";
+                elem.remove(); // these removals save space on the screen on mobile
                 addViewButtonToDOM(parentDiv, treasureBoxItem);
             }
             break;
@@ -111,7 +108,7 @@ function unlock(elem) {
             if (!treasureBoxItem.owned && modifiers.crowns >= treasureBoxItem.price) {
                 treasureBoxItem.owned = 1;
                 updateCrowns(-1 * treasureBoxItem.price);
-                elem.innerHTML = "Owned";
+                elem.remove();
                 addViewButtonToDOM(parentDiv, treasureBoxItem);
             }
             break;
@@ -285,7 +282,7 @@ function initializeShops() {
 function initOwnedTreasureBoxItems(item) {    
     if (item.owned) {
         let parentDiv = document.getElementById(item.id + "Item");
-        document.getElementById(item.id).innerHTML = "Owned";
+        document.getElementById(item.id).remove(); // removes all buttons that say "unlock" if the item is owned
         addViewButtonToDOM(parentDiv, item);
     }
 }
