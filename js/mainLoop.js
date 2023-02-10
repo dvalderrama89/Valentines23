@@ -208,12 +208,15 @@ function updateCrowns(flatRateIncrement=0) {
 
 function updateCrownButtons() {
     for (let treasure of TreasureBox) {
-        let buttonElem = document.getElementById(treasure.id);
-        let crownAnchor = buttonElem.firstChild;
-        if (!treasure.owned && modifiers.crowns >= treasure.price) {
-            buttonElem.disabled = false;
-        } else {
-            buttonElem.disabled = true;
+        if (!treasure.owned) {
+            let buttonElem = document.getElementById(treasure.id);
+            let crownAnchor = buttonElem.firstChild;
+
+            if (modifiers.crowns >= treasure.price) {
+                buttonElem.disabled = false;
+            } else {
+                buttonElem.disabled = true;
+            }
         }
     }
 }
