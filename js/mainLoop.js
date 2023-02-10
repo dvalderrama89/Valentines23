@@ -61,7 +61,7 @@ function buy(elem) {
             if (heartTokens >= arrayItem.price) {
                 heartTokens -= BigInt(arrayItem.price);
                 arrayItem.owned = 1;
-                arrayItem.price = arrayItem.price * Math.pow(2, arrayItem.bonus);
+                arrayItem.price = (arrayItem.price/2) * Math.pow(2, arrayItem.numTimesBought);
                 arrayItem.numTimesBought++;
                 arrayItem.bonus = 2 * Math.pow(2, arrayItem.numTimesBought); // TODO change this from linear to something faster
                 // document.getElementById(elem.id + "Text").innerHTML = `Autoclick +${arrayItem.bonus}`;
@@ -491,7 +491,7 @@ var ShopItems =
     "id": "autoIncrementer",
     "displayName": "Enable Autoclick",
     "owned": 0,
-    "price": 10000,
+    "price": 100,
     "bonus": 0, // starts off just add 1 additional heart each tick (increases to 1 from 0 after first buy);
     "baseMod": 1000, // about 6 seconds between each +1 increase to start
     "numTimesBought": 0,
@@ -501,7 +501,7 @@ var ShopItems =
     "id": "speedBoost",
     "displayName": "Speed Boost +1",
     "owned": 0,
-    "price": 50000,
+    "price": 500,
     "tier": 1,
     "atMax": 0, // flipped to 1 when tier = 7
 },
@@ -510,7 +510,7 @@ var ShopItems =
     "id": "autoClaimer",
     "displayName": "Auto Claimer",
     "owned": 0,
-    "price": 100000,
+    "price": 100,
     "stock": 1,
     "toggle": 1,
 }];
