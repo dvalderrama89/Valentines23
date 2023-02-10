@@ -1,8 +1,7 @@
 let heartTokens = BigInt(0);
 let flatRateHeartTokensBonus = BigInt(1);
-
+let last = 0;
 let modifiers = {
-    last: 0,
     crowns: 0,
     speed: 0.6,
     addHeartsMod: 1.0,
@@ -26,9 +25,8 @@ function update(timeStamp) {
 
     // This is what turns the game from manual to idle by starting the tick up of currency on a timer
     if (findInShop("autoIncrementer").owned) {
-        if (timeInSeconds - modifiers.last >= modifiers.speed) {
-            console.log("incremengint with autoincrementer");
-            modifiers.last = timeInSeconds;
+        if (timeInSeconds - last >= modifiers.speed) {
+           last = timeInSeconds;
             updateHeartTokens();
             updateCrowns();
         }
