@@ -16,11 +16,8 @@ window.onload = (event) => {
 
 function start() {
     initializeModifiers();
-    console.log("done mods");
-    initializeCurrencyAndBigInts();
-    console.log("done bitints");
+    initializeCurrencyAndBigInts();    
     initializeShops();
-    console.log("done shops");
     window.requestAnimationFrame(update);
 }
 
@@ -30,6 +27,7 @@ function update(timeStamp) {
     // This is what turns the game from manual to idle by starting the tick up of currency on a timer
     if (findInShop("autoIncrementer").owned) {
         if (timeInSeconds - modifiers.last >= modifiers.speed) {
+            console.log("incremengint with autoincrementer");
             modifiers.last = timeInSeconds;
             updateHeartTokens();
             updateCrowns();
