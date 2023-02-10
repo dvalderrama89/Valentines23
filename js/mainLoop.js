@@ -27,7 +27,7 @@ function update(timeStamp) {
     if (findInShop("autoIncrementer").owned) {
         if (timeInSeconds - last >= modifiers.speed) {
            last = timeInSeconds;
-            updateHeartTokens();
+            updateHeartTokens(findInShop("autoIncrementer").bonus);
             updateCrowns();
         }
     }
@@ -43,13 +43,17 @@ function update(timeStamp) {
 }
 
 // The id in the button HTML and the id in the ShopItems array of JSON objs has to match
+// Price updates occur here so each subsequent purchase makes the shop item cost more
 function buy(elem) {
     let arrayItem = findInShop(elem.id);
     switch (elem.id) {
         case "plusOneBonus": {
             if (heartTokens >= arrayItem.price) {
                 heartTokens -= BigInt(arrayItem.price);
-                flatRateHeartTokensBonus++;
+                arrayItem.numTimesBought++;
+                flatRateHeartTokensBonus = BigInt(10 * Math.pow(2, arrayItem.numTimesBought));
+                arrayItem.price = 2 * Math.pow(10, arrayItem.numTimesBought);
+                // document.getElementById(elem.id + "Text").innerHTML = `Click Bonus +${flatRateHeartTokensBonus}`;
             }
             break;
         }
@@ -57,6 +61,10 @@ function buy(elem) {
             if (heartTokens >= arrayItem.price) {
                 heartTokens -= BigInt(arrayItem.price);
                 arrayItem.owned = 1;
+                arrayItem.price = arrayItem.price * Math.pow(2, arrayItem.bonus);
+                arrayItem.numTimesBought++;
+                arrayItem.bonus = 2 * Math.pow(2, arrayItem.numTimesBought); // TODO change this from linear to something faster
+                // document.getElementById(elem.id + "Text").innerHTML = `Autoclick +${arrayItem.bonus}`;
             }
             break;
         }
@@ -64,11 +72,12 @@ function buy(elem) {
             if (!arrayItem.atMax && heartTokens >= arrayItem.price) {
                 heartTokens -= BigInt(arrayItem.price);
                 arrayItem.owned = 1;
+                arrayItem.price = arrayItem.price * Math.pow(2, (arrayItem.tier+1));
 
                 // Increments the power that the autoIncrementer increments at
                 if (arrayItem.tier < 7) {
                     arrayItem.tier += 1;
-                    document.getElementById(elem.id + "Text").innerHTML = `Speed Boost +${arrayItem.tier}`;
+                    // document.getElementById(elem.id + "Text").innerHTML = `Speed Boost +${arrayItem.tier}`;
 
                     if (arrayItem.tier >= 7) {
                         arrayItem.atMax = 1;
@@ -187,6 +196,7 @@ function updateHeartTokens(flatRateIncrement=0) {
 }
 
 function updateBuyButtons() {
+    // For Treasure Box
     // for crown claim button
     let crownClaimButtonElem = document.getElementById("crownClaimButton");
     if (heartTokens >= modifiers.crownsPriceDynamic) {
@@ -199,8 +209,24 @@ function updateBuyButtons() {
         crownClaimButtonElem.disabled = true;
     }
 
+    // For Shop
+    // updates text of the items to show right modifiers on the +1s
+    // TODO: optimize the way that the text gets displayed
+    document.getElementById("plusOneBonusText").innerHTML = `Click Bonus +${flatRateHeartTokensBonus}`;
+
+    if (findInShop("autoIncrementer").owned) {
+        document.getElementById("autoIncrementerText").innerHTML = `Autoclick +${findInShop("autoIncrementer").bonus}`;
+    }
+
+    document.getElementById("speedBoostText").innerHTML = `Speed Boost +${findInShop("speedBoost").tier}`;
+
     // for buttons in the Shop
     for (let item of ShopItems) {
+
+        // updates the price of the items if they were changed after buying
+        document.getElementById(item.id + "Price").innerHTML = `${item.price}💖`;
+
+        //enables or disables the buttons
         if (heartTokens >= item.price) {
             let itemElem = document.getElementById(item.id);
 
@@ -304,11 +330,12 @@ function initializeShops() {
     }
 
     // Speed Boost dynamic text
-    document.getElementById(findInShop("speedBoost").id + "Text").innerHTML = `Speed Boost +${findInShop("speedBoost").tier}`;
-    if (findInShop("speedBoost").atMax) {
+    let speedBoostItem = findInShop("speedBoost");
+    document.getElementById(speedBoostItem.id + "Text").innerHTML = `Speed Boost +${speedBoostItem.tier}`;
+    if (speedBoostItem.atMax) {
         // Remove the price because we're at max and update the shop button
-        document.getElementById(findInShop("speedBoost").id + "Price").innerHTML = "";
-        document.getElementById(findInShop("speedBoost").id).innerHTML = "MAXED";
+        document.getElementById(speedBoostItem.id + "Price").innerHTML = "";
+        document.getElementById(speedBoostItem.id).innerHTML = "MAXED";
     }
 
     updateBuyButtons();
@@ -456,22 +483,25 @@ var ShopItems =
     "displayName": "Click Bonus +1",
     "owned": 0,
     "price": 10,
-    "increase": 1 
+    "increase": 1,
+    "numTimesBought": 0,
 },
 // This automatically generates heart tokens on a given interval dictated by the baseMod and other mod vars
 {
     "id": "autoIncrementer",
-    "displayName": "Autoclick +1",
+    "displayName": "Enable Autoclick",
     "owned": 0,
-    "price": 10,
-    "baseMod": 1000 // about 6 seconds between each +1 increase to start
+    "price": 10000,
+    "bonus": 0, // starts off just add 1 additional heart each tick (increases to 1 from 0 after first buy);
+    "baseMod": 1000, // about 6 seconds between each +1 increase to start
+    "numTimesBought": 0,
 },
 // This will cut the autoIncrementer in half each time it's applied until the total of autoIncrementer.baseMod/(Math.pow(2, 7)) <= 7
 {
     "id": "speedBoost",
     "displayName": "Speed Boost +1",
     "owned": 0,
-    "price": 50,
+    "price": 50000,
     "tier": 1,
     "atMax": 0, // flipped to 1 when tier = 7
 },
@@ -480,7 +510,7 @@ var ShopItems =
     "id": "autoClaimer",
     "displayName": "Auto Claimer",
     "owned": 0,
-    "price": 20,
+    "price": 100000,
     "stock": 1,
     "toggle": 1,
 }];
