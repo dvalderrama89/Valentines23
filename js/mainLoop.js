@@ -16,8 +16,11 @@ window.onload = (event) => {
 
 function start() {
     initializeModifiers();
+    console.log("done mods");
     initializeCurrencyAndBigInts();
+    console.log("done bitints");
     initializeShops();
+    console.log("done shops");
     window.requestAnimationFrame(update);
 }
 
