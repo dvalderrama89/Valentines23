@@ -201,7 +201,7 @@ function updateBuyButtons() {
     let crownClaimButtonElem = document.getElementById("crownClaimButton");
     if (heartTokens >= modifiers.crownsPriceDynamic) {
         crownClaimButtonElem.disabled = false;
-        let autoClaimer = findInShop("autoClaimer");
+        let autoClaimer = ShopItems[3]; // hack so that toggle doesnt exceed call stack
         if (autoClaimer.owned && autoClaimer.toggle) {
             incrementCrowns();
         }
