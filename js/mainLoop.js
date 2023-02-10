@@ -308,7 +308,7 @@ function initializeShops() {
     if (findInShop("speedBoost").atMax) {
         // Remove the price because we're at max and update the shop button
         document.getElementById(findInShop("speedBoost").id + "Price").innerHTML = "";
-        elem.innerHTML = "MAXED";
+        document.getElementById(findInShop("speedBoost").id).innerHTML = "MAXED";
     }
 
     updateBuyButtons();
