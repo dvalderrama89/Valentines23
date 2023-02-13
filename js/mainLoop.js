@@ -53,7 +53,6 @@ function buy(elem) {
                 arrayItem.numTimesBought++;
                 flatRateHeartTokensBonus = BigInt(Math.floor(arrayItem.numTimesBought + (Math.pow(2, arrayItem.numTimesBought) / arrayItem.numTimesBought)));
                 arrayItem.price = Math.floor(3*Math.pow(2, arrayItem.numTimesBought) / 1.25);
-                // document.getElementById(elem.id + "Text").innerHTML = `Click Bonus +${flatRateHeartTokensBonus}`;
             }
             break;
         }
@@ -62,9 +61,8 @@ function buy(elem) {
                 heartTokens -= BigInt(arrayItem.price);
                 arrayItem.owned = 1;
                 arrayItem.price = arrayItem.price*2 * Math.pow(3, (arrayItem.numTimesBought + 1));
-                arrayItem.bonus = arrayItem.bonus + Math.pow(2, arrayItem.numTimesBought); // TODO change this from linear to something faster
+                arrayItem.bonus = arrayItem.bonus + Math.pow(2, arrayItem.numTimesBought);
                 arrayItem.numTimesBought++;
-                // document.getElementById(elem.id + "Text").innerHTML = `Autoclick +${arrayItem.bonus}`;
             }
             break;
         }
@@ -77,7 +75,6 @@ function buy(elem) {
                 // Increments the power that the autoIncrementer increments at
                 if (arrayItem.tier < 7) {
                     arrayItem.tier += 1;
-                    // document.getElementById(elem.id + "Text").innerHTML = `Speed Boost +${arrayItem.tier}`;
 
                     if (arrayItem.tier >= 7) {
                         arrayItem.atMax = 1;
