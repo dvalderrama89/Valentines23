@@ -557,14 +557,14 @@ var TreasureBox =
     "displayName": "Photoset 1",
     "owned": 0,
     "price": 1000,
-    "filePath": "https://drive.google.com/drive/folders/1nj72CcA0HQc1Vw22q2NjHOiwWS3L_UeS?usp=sharing"
+    "filePath": "https\\://drive.google.com/drive/folders/1nj72CcA0HQc1Vw22q2NjHOiwWS3L_UeS?usp=sharing"
 },
 {
     "id": "yellowSet",
     "displayName": "Photoset 2",
     "owned": 0,
     "price": 5000,
-    "filePath": "https://drive.google.com/drive/folders/1EcsDkT-ZO4NVkNSAyDos7pqRr2kB_S9k?usp=sharing"
+    "filePath": "https\\://drive.google.com/drive/folders/1EcsDkT-ZO4NVkNSAyDos7pqRr2kB_S9k?usp=sharing"
 },
 {
     "id": "hpChapter1",
