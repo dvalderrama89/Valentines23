@@ -571,7 +571,7 @@ var TreasureBox =
     "displayName": "Audiobook - Chapter 1",
     "owned": 0,
     "price": 10000,
-    "filePath": "rewards\\/hp1_ch1.mp3"
+    "filePath": "rewards/hp1_ch1.mp3"
 }];
 
 
