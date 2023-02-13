@@ -60,7 +60,7 @@ function buy(elem) {
             if (heartTokens >= arrayItem.price) {
                 heartTokens -= BigInt(arrayItem.price);
                 arrayItem.owned = 1;
-                arrayItem.price = arrayItem.price*2 * Math.pow(3, (arrayItem.numTimesBought + 1));
+                arrayItem.price = Math.floor(arrayItem.price*1.50 * Math.pow(2, (arrayItem.numTimesBought + 1)));
                 arrayItem.bonus = arrayItem.bonus + Math.pow(2, arrayItem.numTimesBought);
                 arrayItem.numTimesBought++;
             }
@@ -70,7 +70,7 @@ function buy(elem) {
             if (!arrayItem.atMax && heartTokens >= arrayItem.price) {
                 heartTokens -= BigInt(arrayItem.price);
                 arrayItem.owned = 1;
-                arrayItem.price = arrayItem.price * Math.pow(2, (arrayItem.tier+1));
+                arrayItem.price = arrayItem.price * Math.floor(Math.pow(2, (arrayItem.tier+1))/1.75);
 
                 // Increments the power that the autoIncrementer increments at
                 if (arrayItem.tier < 7) {
