@@ -550,21 +550,21 @@ var TreasureBox =
     "displayName": "Letter to My Love",
     "owned": 0,
     "price": 10,
-    "filePath": "rewards\\/vdayNote2023.jpg"
+    "filePath": "rewards/vdayNote2023.jpg"
 },
 {
     "id": "blueSet",
     "displayName": "Photoset 1",
     "owned": 0,
     "price": 1000,
-    "filePath": "https:\\/\\/drive.google.com\\/drive\\/folders\\/1nj72CcA0HQc1Vw22q2NjHOiwWS3L_UeS?usp=sharing"
+    "filePath": "rewards/blue/set1.zip"
 },
 {
     "id": "yellowSet",
     "displayName": "Photoset 2",
     "owned": 0,
     "price": 5000,
-    "filePath": "https:\\/\\/drive.google.com\\/drive\\/folders\\/1EcsDkT-ZO4NVkNSAyDos7pqRr2kB_S9k?usp=sharing"
+    "filePath": "rewards/yellow/set2.zip"
 },
 {
     "id": "hpChapter1",
