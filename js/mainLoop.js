@@ -51,8 +51,8 @@ function buy(elem) {
             if (heartTokens >= arrayItem.price) {
                 heartTokens -= BigInt(arrayItem.price);
                 arrayItem.numTimesBought++;
-                flatRateHeartTokensBonus = BigInt(10 * Math.pow(2, arrayItem.numTimesBought));
-                arrayItem.price = 2 * Math.pow(10, arrayItem.numTimesBought);
+                flatRateHeartTokensBonus = BigInt(Math.floor(arrayItem.numTimesBought + (Math.pow(2, arrayItem.numTimesBought) / arrayItem.numTimesBought)));
+                arrayItem.price = Math.floor(3*Math.pow(2, arrayItem.numTimesBought) / 1.25);
                 // document.getElementById(elem.id + "Text").innerHTML = `Click Bonus +${flatRateHeartTokensBonus}`;
             }
             break;
@@ -61,9 +61,9 @@ function buy(elem) {
             if (heartTokens >= arrayItem.price) {
                 heartTokens -= BigInt(arrayItem.price);
                 arrayItem.owned = 1;
-                arrayItem.price = (arrayItem.price/2) * Math.pow(2, arrayItem.numTimesBought);
+                arrayItem.price = arrayItem.price*2 * Math.pow(3, (arrayItem.numTimesBought + 1));
+                arrayItem.bonus = arrayItem.bonus + Math.pow(2, arrayItem.numTimesBought); // TODO change this from linear to something faster
                 arrayItem.numTimesBought++;
-                arrayItem.bonus = 2 * Math.pow(2, arrayItem.numTimesBought); // TODO change this from linear to something faster
                 // document.getElementById(elem.id + "Text").innerHTML = `Autoclick +${arrayItem.bonus}`;
             }
             break;
@@ -135,7 +135,27 @@ function unlock(elem) {
             }
             break;
         }
-        case "test1": {
+        case "loveLetter": {
+            if (!treasureBoxItem.owned && modifiers.crowns >= treasureBoxItem.price) {
+                treasureBoxItem.owned = 1;
+                updateCrowns(-1 * treasureBoxItem.price);
+                elem.remove();
+                document.getElementById(elem.id + "Price").innerHTML = "";
+                addViewButtonToDOM(parentDiv, treasureBoxItem);
+            }
+            break;
+        }
+        case "blueSet": {
+            if (!treasureBoxItem.owned && modifiers.crowns >= treasureBoxItem.price) {
+                treasureBoxItem.owned = 1;
+                updateCrowns(-1 * treasureBoxItem.price);
+                elem.remove();
+                document.getElementById(elem.id + "Price").innerHTML = "";
+                addViewButtonToDOM(parentDiv, treasureBoxItem);
+            }
+            break;
+        }
+        case "yellowSet": {
             if (!treasureBoxItem.owned && modifiers.crowns >= treasureBoxItem.price) {
                 treasureBoxItem.owned = 1;
                 updateCrowns(-1 * treasureBoxItem.price);
@@ -212,7 +232,8 @@ function updateBuyButtons() {
     // For Shop
     // updates text of the items to show right modifiers on the +1s
     // TODO: optimize the way that the text gets displayed
-    document.getElementById("plusOneBonusText").innerHTML = `Click Bonus +${flatRateHeartTokensBonus}`;
+    let tempNum = ShopItems[0].numTimesBought + 1;
+    document.getElementById("plusOneBonusText").innerHTML = `Click Bonus +${BigInt(Math.floor(tempNum + (Math.pow(2, tempNum) / tempNum)))}`;
 
     if (findInShop("autoIncrementer").owned) {
         document.getElementById("autoIncrementerText").innerHTML = `Autoclick +${findInShop("autoIncrementer").bonus}`;
@@ -491,7 +512,7 @@ var ShopItems =
     "id": "autoIncrementer",
     "displayName": "Enable Autoclick",
     "owned": 0,
-    "price": 100,
+    "price": 10000,
     "bonus": 0, // starts off just add 1 additional heart each tick (increases to 1 from 0 after first buy);
     "baseMod": 1000, // about 6 seconds between each +1 increase to start
     "numTimesBought": 0,
@@ -501,7 +522,7 @@ var ShopItems =
     "id": "speedBoost",
     "displayName": "Speed Boost +1",
     "owned": 0,
-    "price": 500,
+    "price": 50000,
     "tier": 1,
     "atMax": 0, // flipped to 1 when tier = 7
 },
@@ -510,7 +531,7 @@ var ShopItems =
     "id": "autoClaimer",
     "displayName": "Auto Claimer",
     "owned": 0,
-    "price": 100,
+    "price": 100000,
     "stock": 1,
     "toggle": 1,
 }];
@@ -525,18 +546,32 @@ function findInTreasureBox(itemID) {
 
 var TreasureBox = 
 [{
+    "id": "loveLetter",
+    "displayName": "Letter to My Love",
+    "owned": 0,
+    "price": 10,
+    "filePath": "rewards/vdayNote2023.jpg"
+},
+{
+    "id": "blueSet",
+    "displayName": "Photoset 1",
+    "owned": 0,
+    "price": 1000,
+    "filePath": "https://drive.google.com/drive/folders/1nj72CcA0HQc1Vw22q2NjHOiwWS3L_UeS?usp=sharing"
+},
+{
+    "id": "yellowSet",
+    "displayName": "Photoset 2",
+    "owned": 0,
+    "price": 5000,
+    "filePath": "https://drive.google.com/drive/folders/1EcsDkT-ZO4NVkNSAyDos7pqRr2kB_S9k?usp=sharing"
+},
+{
     "id": "hpChapter1",
     "displayName": "Audiobook - Chapter 1",
     "owned": 0,
-    "price": 1,
-    "filePath": "rewards/testFileHP1.mp3"
-},
-{
-    "id": "test1",
-    "displayName": "Test - Test Test 1",
-    "owned": 0,
-    "price": 2,
-    "filePath": "rewards/test.mp3"
+    "price": 10000,
+    "filePath": "rewards/hp1_ch1.mp3"
 }];
 
 
